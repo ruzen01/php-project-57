@@ -1,0 +1,44 @@
+ name: Laravel Test
+
+ on:
+   push:
+     branches:
+       - main
+   pull_request:
+     branches:
+       - main
+
+ jobs:
+   tests:
+     runs-on: ubuntu-latest
+
+     services:
+       postgres:
+         image: postgres:12
+         env:
+           POSTGRES_DB: laravel
+           POSTGRES_USER: root
+           POSTGRES_PASSWORD: password
+         ports:
+           - 5432:5432
+         options: >-
+           --health-cmd="pg_isready"
+           --health-interval=10s
+           --health-timeout=5s
+           --health-retries=5
+
+     steps:
+       - uses: actions/checkout@v2
+
+       - name: Setup PHP
+         uses: shivammathur/setup-php@v2
+         with:
+           php-version: '8.1'
+           extensions: mbstring, pdo, pgsql
+           coverage: xdebug
+
+       - name: Install dependencies
+         run: composer install --no-progress --no-suggest
+
+       - name: Run tests
+         run: php artisan test
