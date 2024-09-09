@@ -6,12 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "laracasts/flash": "^3.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "sentry/sentry-laravel": "^4.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
