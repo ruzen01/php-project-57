@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\LabelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,3 +25,5 @@ require __DIR__.'/auth.php';
 Route::resource('task_statuses', TaskStatusController::class)->middleware('auth');
 
 Route::resource('tasks', TaskController::class)->middleware('auth');
+
+Route::resource('labels', LabelController::class)->middleware('auth');
