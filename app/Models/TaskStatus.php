@@ -14,6 +14,6 @@ class TaskStatus extends Model
     // Определяем связь один ко многим с моделью Task
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class, 'status_id');
     }
 }
