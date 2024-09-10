@@ -7,23 +7,37 @@ use App\Models\TaskStatus;
 use App\Models\Label;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Загружаем задачи вместе с привязанными метками
-        $tasks = Task::with('labels')->get();
-
-        return view('tasks.index', compact('tasks'));
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id'),
+                AllowedFilter::scope('label') // Фильтр по меткам
+            ])
+            ->with(['labels', 'status', 'creator', 'assignee']) // Заменяем 'executor' на 'assignee'
+            ->get();
+    
+        $task_statuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
+    
+        return view('tasks.index', compact('tasks', 'task_statuses', 'users', 'labels'));
     }
 
     public function create()
     {
         $task_statuses = TaskStatus::all();
         $users = User::all();
-        $labels = Label::all(); // Получаем все метки
-        return view('tasks.create', compact('task_statuses', 'users', 'labels')); // Передаем метки в представление
+        $labels = Label::all();
+        return view('tasks.create', compact('task_statuses', 'users', 'labels'));
     }
 
     public function store(Request $request)
@@ -34,13 +48,12 @@ class TaskController extends Controller
             'status_id' => 'required|exists:task_statuses,id',
             'created_by_id' => 'required|exists:users,id',
             'assigned_to_id' => 'nullable|exists:users,id',
-            'labels' => 'array',  // Массив ID меток
-            'labels.*' => 'exists:labels,id',  // Проверяем существование каждой метки
+            'labels' => 'array',
+            'labels.*' => 'exists:labels,id',
         ]);
 
         $task = Task::create($validatedData);
 
-        // Привязка меток
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
@@ -48,12 +61,11 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
 
-
     public function edit(Task $task)
     {
         $task_statuses = TaskStatus::all();
         $users = User::all();
-        $labels = Label::all(); // Получаем все метки
+        $labels = Label::all();
         return view('tasks.edit', compact('task', 'task_statuses', 'users', 'labels'));
     }
 
@@ -80,11 +92,11 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         if (auth()->user()->id !== $task->created_by_id) {
-            return redirect()->route('tasks.index')->with('error', __('Only the creator can delete the task.'));
+            return redirect()->route('tasks.index')->with('error', 'Only the creator can delete the task.');
         }
 
         $task->delete();
 
-        return redirect()->route('tasks.index')->with('success', __('Task deleted successfully.'));
+        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
     }
 }

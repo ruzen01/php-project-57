@@ -31,4 +31,11 @@ class Task extends Model
     {
         return $this->belongsToMany(Label::class);
     }
+
+    public function scopeLabel($query, $labelId)
+    {
+        return $query->whereHas('labels', function ($q) use ($labelId) {
+            $q->where('id', $labelId);
+        });
+    }
 }
