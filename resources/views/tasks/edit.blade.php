@@ -33,7 +33,7 @@
         <div class="form-group">
             <label for="status_id">Status</label>
             <select name="status_id" id="status_id" class="form-control">
-                @foreach ($statuses as $status)
+                @foreach ($task_statuses as $status)
                     <option value="{{ $status->id }}" @if($task->status_id == $status->id) selected @endif>
                         {{ $status->name }}
                     </option>
@@ -52,6 +52,20 @@
                 @endforeach
             </select>
         </div>
+
+        <!-- Блок для выбора меток -->
+        <div class="form-group">
+            <label for="labels">Labels</label>
+            <select name="labels[]" id="labels" class="form-control" multiple>
+                @foreach ($labels as $label)
+                    <option value="{{ $label->id }}" 
+                        @if($task->labels->contains($label->id)) selected @endif>
+                        {{ $label->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <!-- Конец блока для выбора меток -->
 
         <button type="submit" class="btn btn-primary">Update Task</button>
     </form>

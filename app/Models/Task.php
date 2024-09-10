@@ -9,6 +9,7 @@ class Task extends Model
 {
     use HasFactory;
     
+    
     protected $fillable = ['name', 'description', 'status_id', 'created_by_id', 'assigned_to_id'];
 
     public function status()
@@ -24,5 +25,10 @@ class Task extends Model
     public function assignee()
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
+    }
+
+    public function labels()
+    {
+        return $this->belongsToMany(Label::class);
     }
 }

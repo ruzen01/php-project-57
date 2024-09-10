@@ -9,6 +9,8 @@ use App\Models\Task;
 class TaskStatus extends Model
 {
     use HasFactory;
+    protected $table = 'task_statuses';
+    
     // Разрешаем массовое присвоение для поля 'name'
     protected $fillable = ['name'];
     // Определяем связь один ко многим с моделью Task

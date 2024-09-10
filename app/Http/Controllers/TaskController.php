@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Models\Label;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -11,54 +12,69 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::all();
+        // Загружаем задачи вместе с привязанными метками
+        $tasks = Task::with('labels')->get();
+
         return view('tasks.index', compact('tasks'));
     }
 
     public function create()
     {
-        $statuses = TaskStatus::all();
+        $task_statuses = TaskStatus::all();
         $users = User::all();
-        return view('tasks.create', compact('statuses', 'users'));
+        $labels = Label::all(); // Получаем все метки
+        return view('tasks.create', compact('task_statuses', 'users', 'labels')); // Передаем метки в представление
     }
 
     public function store(Request $request)
     {
-        \Log::info($request->all()); // Логирование данных запроса
-        
-        $request->validate([
-            'name' => 'required',
-            'status_id' => 'required',
-            'created_by_id' => 'required',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status_id' => 'required|exists:task_statuses,id',
+            'created_by_id' => 'required|exists:users,id',
+            'assigned_to_id' => 'nullable|exists:users,id',
+            'labels' => 'array',  // Массив ID меток
+            'labels.*' => 'exists:labels,id',  // Проверяем существование каждой метки
         ]);
 
-        $task = Task::create($request->all());
+        $task = Task::create($validatedData);
 
-        return redirect()->route('tasks.index')->with('success', __('Task created successfully.'));
+        // Привязка меток
+        if ($request->has('labels')) {
+            $task->labels()->sync($request->labels);
+        }
+
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
 
-    public function show(Task $task)
-    {
-        return view('tasks.show', compact('task'));
-    }
 
     public function edit(Task $task)
     {
-        $statuses = TaskStatus::all();
+        $task_statuses = TaskStatus::all();
         $users = User::all();
-        return view('tasks.edit', compact('task', 'statuses', 'users'));
+        $labels = Label::all(); // Получаем все метки
+        return view('tasks.edit', compact('task', 'task_statuses', 'users', 'labels'));
     }
 
     public function update(Request $request, Task $task)
     {
-        $request->validate([
-            'name' => 'required',
-            'status_id' => 'required',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status_id' => 'required|exists:task_statuses,id',
+            'assigned_to_id' => 'nullable|exists:users,id',
+            'labels' => 'array',
+            'labels.*' => 'exists:labels,id',
         ]);
 
-        $task->update($request->all());
+        $task->update($validatedData);
 
-        return redirect()->route('tasks.index')->with('success', __('Task updated successfully.'));
+        if ($request->has('labels')) {
+            $task->labels()->sync($request->labels);
+        }
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
 
     public function destroy(Task $task)

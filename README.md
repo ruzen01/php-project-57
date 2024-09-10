@@ -1,6 +1,10 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/ruzen01/php-project-57/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/ruzen01/php-project-57/actions)
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/3384c536b7edd87a4045/maintainability)](https://codeclimate.com/github/ruzen01/php-project-57/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/3384c536b7edd87a4045/test_coverage)](https://codeclimate.com/github/ruzen01/php-project-57/test_coverage)
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

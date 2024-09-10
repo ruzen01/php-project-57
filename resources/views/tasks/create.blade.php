@@ -31,7 +31,7 @@
         <div class="form-group">
             <label for="status_id">Status</label>
             <select name="status_id" id="status_id" class="form-control">
-                @foreach ($statuses as $status)
+                @foreach ($task_statuses as $status)
                 <option value="{{ $status->id }}">{{ $status->name }}</option>
                 @endforeach
             </select>
@@ -56,5 +56,18 @@
             </select>
         </div>
 
+        <!-- Блок для выбора меток -->
+        <div class="form-group">
+            <label for="labels">Labels</label>
+            <select name="labels[]" id="labels" class="form-control" multiple>
+                @foreach ($labels as $label)
+                    <option value="{{ $label->id }}">{{ $label->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <!-- Конец блока для выбора меток -->
+
         <button type="submit" class="btn btn-primary">Create Task</button>
     </form>
+</div>
+@endsection
