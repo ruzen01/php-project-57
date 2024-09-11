@@ -16,32 +16,45 @@
         </div>
     @endif
 
-    <a href="{{ route('labels.create') }}" class="btn btn-primary mb-3">Add New Label</a>
+    <!-- Кнопка "Создать метку" доступна только для авторизованных пользователей -->
+    @auth
+        <a href="{{ route('labels.create') }}" class="btn btn-primary mb-3">Создать метку</a>
+    @endauth
 
+    <!-- Таблица меток -->
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Описание</th>
+                <th>Дата создания</th>
+                @auth
+                <th>Действия</th>
+                @endauth
             </tr>
         </thead>
         <tbody>
             @foreach ($labels as $label)
                 <tr>
+                    <td>{{ $label->id }}</td>
                     <td>{{ $label->name }}</td>
-                    <td>{{ $label->description ?? 'No description' }}</td>
+                    <td>{{ $label->description ?? 'Описание отсутствует' }}</td>
+                    <td>{{ $label->created_at->format('d.m.Y') }}</td>
+                    @auth
                     <td>
-                        <a href="{{ route('labels.edit', $label->id) }}" class="btn btn-warning">Edit</a>
+                        <!-- Кнопки "Редактировать" и "Удалить" -->
+                        <a href="{{ route('labels.edit', $label->id) }}" class="btn btn-warning">Редактировать</a>
                         <form action="{{ route('labels.destroy', $label->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Are you sure you want to delete this label?');">
-                                Delete
+                                    onclick="return confirm('Вы уверены, что хотите удалить эту метку?');">
+                                Удалить
                             </button>
                         </form>
                     </td>
+                    @endauth
                 </tr>
             @endforeach
         </tbody>

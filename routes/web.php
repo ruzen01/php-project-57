@@ -14,6 +14,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Профиль пользователя только для авторизованных пользователей
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -22,8 +23,15 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::resource('task_statuses', TaskStatusController::class)->middleware('auth');
+// Публичные маршруты для просмотра задач, статусов и меток
+Route::get('task_statuses', [TaskStatusController::class, 'index'])->name('task_statuses.index'); // Публичный просмотр статусов
+Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index', 'tasks.show'); // Публичный просмотр задач
+Route::get('tasks/{id}', [TaskController::class, 'show'])->name('tasks.show'); // Публичный просмотр конкретной задачи
+Route::get('labels', [LabelController::class, 'index'])->name('labels.index'); // Публичный просмотр меток
 
-Route::resource('tasks', TaskController::class)->middleware('auth');
-
-Route::resource('labels', LabelController::class)->middleware('auth');
+// Только для авторизованных пользователей (создание, редактирование, удаление)
+Route::middleware('auth')->group(function () {
+    Route::resource('task_statuses', TaskStatusController::class)->except(['index']); // Остальные операции только для авторизованных
+    Route::resource('tasks', TaskController::class)->except(['index']); // Остальные операции только для авторизованных
+    Route::resource('labels', LabelController::class)->except(['index']); // Остальные операции только для авторизованных
+});

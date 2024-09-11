@@ -42,22 +42,27 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
+        // Валидация данных
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status_id' => 'required|exists:task_statuses,id',
-            'created_by_id' => 'required|exists:users,id',
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
         ]);
 
+        // Добавляем ID авторизованного пользователя
+        $validatedData['created_by_id'] = auth()->id();
+
+        // Создание задачи
         $task = Task::create($validatedData);
 
+        // Привязка меток к задаче, если они переданы
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
-
+    
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
 
@@ -98,5 +103,11 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
+    }
+
+    public function show($id)
+    {
+        $task = Task::with('labels')->findOrFail($id); // Подгружаем связанные метки
+        return view('tasks.show', compact('task'));
     }
 }
