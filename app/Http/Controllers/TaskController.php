@@ -110,4 +110,11 @@ class TaskController extends Controller
         $task = Task::with('labels')->findOrFail($id); // Подгружаем связанные метки
         return view('tasks.show', compact('task'));
     }
+
+    public function scopeLabel($query, $labelId)
+    {
+        return $query->whereHas('labels', function ($q) use ($labelId) {
+            $q->where('id', $labelId);
+        });
+    }
 }

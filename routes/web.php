@@ -25,14 +25,15 @@ require __DIR__.'/auth.php';
 
 // Публичные маршруты для просмотра задач, статусов и меток
 Route::get('task_statuses', [TaskStatusController::class, 'index'])->name('task_statuses.index'); // Публичный просмотр статусов
-Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index', 'tasks.show'); // Публичный просмотр задач
-Route::get('tasks/{id}', [TaskController::class, 'show'])->name('tasks.show'); // Публичный просмотр конкретной задачи
+Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index'); // Публичный просмотр задач
+
 Route::get('labels', [LabelController::class, 'index'])->name('labels.index'); // Публичный просмотр меток
 
 // Только для авторизованных пользователей (создание, редактирование, удаление)
 Route::middleware('auth')->group(function () {
-    Route::resource('task_statuses', TaskStatusController::class)->except(['index']); // Остальные операции только для авторизованных
-    Route::resource('tasks', TaskController::class)->except(['index']); // Остальные операции только для авторизованных
-    Route::resource('labels', LabelController::class)->except(['index']); // Остальные операции только для авторизованных
-    Route::resource('tasks', TaskController::class)->except(['index', 'show']); // Включает создание, редактирование и удаление задач
-});
+    Route::resource('tasks', TaskController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('labels', LabelController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('task_statuses', TaskStatusController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+ });
+
+ Route::get('tasks/{id}', [TaskController::class, 'show'])->name('tasks.show'); // Публичный просмотр конкретной задачи
