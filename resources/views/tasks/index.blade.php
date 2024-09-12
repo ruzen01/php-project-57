@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Tasks List</h1>
+    <h1>Задачи</h1>
 
     <!-- Кнопка для создания задачи, видна только авторизованным пользователям -->
     @auth
@@ -13,18 +13,18 @@
     <form method="GET" action="{{ route('tasks.index') }}">
         <div class="row mb-3">
             <div class="col">
-                <label for="status_id">Status</label>
+                <label for="status_id">Статус</label>
                 <select name="filter[status_id]" id="status_id" class="form-control">
-                    <option value="">All Statuses</option>
+                    <option value="">Статус</option>
                     @foreach($task_statuses as $id => $name)
                         <option value="{{ $id }}" {{ request('filter.status_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col">
-                <label for="created_by_id">Created By</label>
+                <label for="created_by_id">Автор</label>
                 <select name="filter[created_by_id]" id="created_by_id" class="form-control">
-                    <option value="">All Creators</option>
+                    <option value="">Автор</option>
                     @foreach($users as $id => $name)
                         <option value="{{ $id }}" {{ request('filter.created_by_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
                     @endforeach
@@ -49,7 +49,7 @@
                 </select>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Filter</button>
+        <button type="submit" class="btn btn-primary">Применить</button>
     </form>
 
     <!-- Таблица с задачами -->
@@ -57,11 +57,11 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Status</th>
-                <th>Name</th>
-                <th>Author</th>
-                <th>Assignee</th>
-                <th>Created At</th>
+                <th>Статус</th>
+                <th>Имя</th>
+                <th>Автор</th>
+                <th>Исполнитель</th>
+                <th>Дата создания</th>
                 @auth <!-- Проверка на авторизацию -->
                 <th>Actions</th>
                 @endauth
