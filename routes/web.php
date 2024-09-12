@@ -34,4 +34,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('task_statuses', TaskStatusController::class)->except(['index']); // Остальные операции только для авторизованных
     Route::resource('tasks', TaskController::class)->except(['index']); // Остальные операции только для авторизованных
     Route::resource('labels', LabelController::class)->except(['index']); // Остальные операции только для авторизованных
+    Route::resource('tasks', TaskController::class)->except(['index', 'show']); // Включает создание, редактирование и удаление задач
 });
