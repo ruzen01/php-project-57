@@ -10,7 +10,10 @@
 
         <div class="form-group">
             <label for="name">Название</label>
-            <input type="text" name="name" class="form-control" value="{{ $label->name }}" required>
+            <input type="text" name="name" class="form-control" value="{{ $label->name }}">
+            @error('name')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="form-group">
@@ -18,7 +21,7 @@
             <textarea name="description" class="form-control">{{ $label->description }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-primary">Обновить</button>
     </form>
 </div>
 @endsection
