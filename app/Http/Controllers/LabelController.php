@@ -20,8 +20,12 @@ class LabelController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|min:1|unique:task_statuses',
+        ], [
+            'name.required' => 'Это обязательное поле', // Кастомное сообщение для пустого поля
+            'name.min' => 'Имя статуса должно содержать хотя бы один символ.', // Кастомное сообщение для min
+            'name.unique' => 'Статус с таким именем уже существует.', // Кастомное сообщение для уникальности
         ]);
 
         Label::create($request->only('name', 'description'));
@@ -36,9 +40,12 @@ class LabelController extends Controller
 
     public function update(Request $request, Label $label)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|min:1|unique:task_statuses',
+        ], [
+            'name.required' => 'Это обязательное поле', // Кастомное сообщение для пустого поля
         ]);
+
 
         $label->update($request->only('name', 'description'));
 

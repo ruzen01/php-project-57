@@ -8,7 +8,11 @@
         @csrf
         <div class="form-group">
             <label for="name">Имя</label>
-            <input type="text" name="name" class="form-control" required>
+            <input type="text" name="name" class="form-control">
+            <!-- Сообщение об ошибке под полем -->
+            @error('name')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="form-group">
