@@ -49,7 +49,7 @@ class LabelController extends Controller
 
         $label->update($request->only('name', 'description'));
 
-        return redirect()->route('labels.index')->with('success', 'Метка успешно обновлена');
+        return redirect()->route('labels.index')->with('success', 'Метка успешно изменена');
     }
 
     public function destroy(Label $label)
