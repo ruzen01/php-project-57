@@ -20,7 +20,6 @@
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
-
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
@@ -39,7 +38,7 @@
                 </a>
             @endif
 
-            <button type="submit" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
+            <button type="submit" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 transition ease-in-out duration-150 text-white font-bold py-2 px-4 rounded ml-4">
                 Войти
             </button>
         </div>
