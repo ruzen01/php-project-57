@@ -65,7 +65,7 @@
                             @else
                                 <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-outline-primary">Выход</button>
+                                    <button type="submit" class="btn btn-outline-primary" dusk="logout-button">Выход</button>
                                 </form>
                             @endguest
                         </div>
