@@ -6,7 +6,7 @@
 
     <!-- Кнопка "Создать новый статус" доступна только авторизованным пользователям -->
     @auth
-    <a href="{{ route('task_statuses.create') }}" class="btn btn-success mb-3">Создать новый статус</a>
+    <a href="{{ route('task_statuses.create') }}" class="btn btn-success mb-3">Создать статус</a>
     @endauth
 
     <!-- Таблица статусов -->
@@ -29,14 +29,15 @@
                 <td>{{ $status->created_at->format('d.m.Y') }}</td>
                 @auth
                 <td>
-                    <!-- Кнопка "Редактировать" -->
-                    <a href="{{ route('task_statuses.edit', $status->id) }}" class="btn btn-primary">Редактировать</a>
-
                     <!-- Кнопка "Удалить" -->
                     <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Удалить</button>
+
+                        <!-- Кнопка "Редактировать" -->
+                        <a href="{{ route('task_statuses.edit', $status->id) }}" class="btn btn-primary">Изменить</a>
+                        
                     </form>
                 </td>
                 @endauth

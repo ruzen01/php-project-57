@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Create Task</h1>
+    <h1>Создать задачу</h1>
 
     <!-- Вывод флеш-сообщений -->
     @if(session('success'))
@@ -19,17 +19,17 @@
     <form method="POST" action="{{ route('tasks.store') }}">
         @csrf
         <div class="form-group">
-            <label for="name">Task Name</label>
+            <label for="name">Имя</label>
             <input type="text" name="name" id="name" class="form-control" required>
         </div>
 
         <div class="form-group">
-            <label for="description">Description</label>
+            <label for="description">Описание</label>
             <textarea name="description" id="description" class="form-control"></textarea>
         </div>
 
         <div class="form-group">
-            <label for="status_id">Status</label>
+            <label for="status_id">Статус</label>
             <select name="status_id" id="status_id" class="form-control">
                 @foreach ($task_statuses as $status)
                 <option value="{{ $status->id }}">{{ $status->name }}</option>
@@ -37,17 +37,17 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="created_by_id">Created By</label>
             <select name="created_by_id" id="created_by_id" class="form-control">
                 @foreach ($users as $user)
                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
             </select>
-        </div>
+        </div> -->
 
         <div class="form-group">
-            <label for="assigned_to_id">Assigned To</label>
+            <label for="assigned_to_id">Исполнитель</label>
             <select name="assigned_to_id" id="assigned_to_id" class="form-control">
                 <option value="">None</option>
                 @foreach ($users as $user)
@@ -58,7 +58,7 @@
 
         <!-- Блок для выбора меток -->
         <div class="form-group">
-            <label for="labels">Labels</label>
+            <label for="labels">Метки</label>
             <select name="labels[]" id="labels" class="form-control" multiple>
                 @foreach ($labels as $label)
                     <option value="{{ $label->id }}">{{ $label->name }}</option>
@@ -67,7 +67,7 @@
         </div>
         <!-- Конец блока для выбора меток -->
 
-        <button type="submit" class="btn btn-primary">Create Task</button>
+        <button type="submit" class="btn btn-primary">Создать</button>
     </form>
 </div>
 @endsection

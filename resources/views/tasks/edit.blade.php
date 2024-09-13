@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Edit Task</h1>
+    <h1>Изменение задачи</h1>
 
     <!-- Вывод флеш-сообщений -->
     @if(session('success'))
@@ -21,17 +21,17 @@
         @method('PUT')
 
         <div class="form-group">
-            <label for="name">Task Name</label>
+            <label for="name">Имя</label>
             <input type="text" name="name" id="name" class="form-control" value="{{ $task->name }}" required>
         </div>
 
         <div class="form-group">
-            <label for="description">Description</label>
+            <label for="description">Описание</label>
             <textarea name="description" id="description" class="form-control">{{ $task->description }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="status_id">Status</label>
+            <label for="status_id">Статус</label>
             <select name="status_id" id="status_id" class="form-control">
                 @foreach ($task_statuses as $status)
                     <option value="{{ $status->id }}" @if($task->status_id == $status->id) selected @endif>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="form-group">
-            <label for="assigned_to_id">Assign To</label>
+            <label for="assigned_to_id">Исполнитель</label>
             <select name="assigned_to_id" id="assigned_to_id" class="form-control">
                 <option value="">None</option>
                 @foreach ($users as $user)
@@ -55,7 +55,7 @@
 
         <!-- Блок для выбора меток -->
         <div class="form-group">
-            <label for="labels">Labels</label>
+            <label for="labels">Метки</label>
             <select name="labels[]" id="labels" class="form-control" multiple>
                 @foreach ($labels as $label)
                     <option value="{{ $label->id }}" 
@@ -67,7 +67,7 @@
         </div>
         <!-- Конец блока для выбора меток -->
 
-        <button type="submit" class="btn btn-primary">Update Task</button>
+        <button type="submit" class="btn btn-primary">Обновить</button>
     </form>
 </div>
 @endsection

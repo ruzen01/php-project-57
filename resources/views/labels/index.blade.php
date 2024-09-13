@@ -43,8 +43,8 @@
                     <td>{{ $label->created_at->format('d.m.Y') }}</td>
                     @auth
                     <td>
-                        <!-- Кнопки "Редактировать" и "Удалить" -->
-                        <a href="{{ route('labels.edit', $label->id) }}" class="btn btn-warning">Редактировать</a>
+                        <!-- Кнопки "Изменить" и "Удалить" -->
+
                         <form action="{{ route('labels.destroy', $label->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
@@ -53,6 +53,8 @@
                                 Удалить
                             </button>
                         </form>
+                        <a href="{{ route('labels.edit', $label->id) }}" class="btn btn-warning">Изменить</a>
+                        
                     </td>
                     @endauth
                 </tr>

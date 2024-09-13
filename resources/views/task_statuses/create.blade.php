@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Создать новый статус</h1>
+    <h1>Создать статус</h1>
 
     <form action="{{ route('task_statuses.store') }}" method="POST">
         @csrf
