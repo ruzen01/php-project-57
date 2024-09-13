@@ -21,9 +21,9 @@
             <x-input-label for="password" :value="__('Пароль')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                type="password"
+                name="password"
+                required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -33,8 +33,8 @@
             <x-input-label for="password_confirmation" :value="__('Подтверждение')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                type="password"
+                name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
@@ -44,9 +44,9 @@
                 {{ __('Уже зарегистрированы?') }}
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Зарегистрировать') }}
-            </x-primary-button>
+            <button type="submit" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
+                Зарегистрировать
+            </button>
         </div>
     </form>
 </x-guest-layout>
