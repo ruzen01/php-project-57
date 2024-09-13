@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Label;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LabelController extends Controller
 {
@@ -21,11 +22,11 @@ class LabelController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|min:1|unique:labels',
+            'name' => 'required|min:1|unique:labels,name',
         ], [
-            'name.required' => 'Это обязательное поле', // Кастомное сообщение для пустого поля
-            'name.min' => 'Имя метки должно содержать хотя бы один символ.', // Кастомное сообщение для min
-            'name.unique' => 'Метка с таким именем уже существует.', // Кастомное сообщение для уникальности
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя метки должно содержать хотя бы один символ.',
+            'name.unique' => 'Метка с таким именем уже существует.',
         ]);
 
         Label::create($request->only('name', 'description'));
@@ -41,14 +42,16 @@ class LabelController extends Controller
     public function update(Request $request, Label $label)
     {
         $validated = $request->validate([
-            'name' => 'required|min:1|unique:labels',
+            'name' => [
+                'required',
+                'min:1',
+                Rule::unique('labels', 'name')->ignore($label->id),
+            ],
         ], [
-            'name.required' => 'Это обязательное поле', // Кастомное сообщение для пустого поля
-            'name.min' => 'Имя метки должно содержать хотя бы один символ.', // Кастомное сообщение для min
-            'name.unique' => 'Метка с таким именем уже существует.', // Кастомное сообщение для уникальности
-
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя метки должно содержать хотя бы один символ.',
+            'name.unique' => 'Метка с таким именем уже существует.',
         ]);
-
 
         $label->update($request->only('name', 'description'));
 

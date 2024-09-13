@@ -63,7 +63,7 @@ class TaskController extends Controller
             $task->labels()->sync($request->labels);
         }
     
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
+        return redirect()->route('tasks.index')->with('success', 'Задача успешно создана.');
     }
 
     public function edit(Task $task)
@@ -91,7 +91,7 @@ class TaskController extends Controller
             $task->labels()->sync($request->labels);
         }
 
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
+        return redirect()->route('tasks.index')->with('success', 'Задача успешно изменена.');
     }
 
     public function destroy(Task $task)
@@ -102,7 +102,7 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
+        return redirect()->route('tasks.index')->with('success', 'Задача успешно удалена');
     }
 
     public function show($id)
