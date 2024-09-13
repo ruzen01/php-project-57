@@ -29,12 +29,19 @@ class TaskStatusController extends Controller
     // Сохранение нового статуса в базе данных
     public function store(Request $request)
     {
+        // Полная валидация с кастомными сообщениями
         $validated = $request->validate([
             'name' => 'required|min:1|unique:task_statuses',
+        ], [
+            'name.required' => 'Это обязательное поле', // Кастомное сообщение для пустого поля
+            'name.min' => 'Имя статуса должно содержать хотя бы один символ.', // Кастомное сообщение для min
+            'name.unique' => 'Статус с таким именем уже существует.', // Кастомное сообщение для уникальности
         ]);
 
+        // Создание нового статуса
         TaskStatus::create($validated);
 
+        // Сообщение об успешном создании статуса
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно создан');
     }
 
@@ -53,7 +60,7 @@ class TaskStatusController extends Controller
 
         $task_status->update($validated);
 
-        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно изменён');
+        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно обновлён');
     }
 
     // Удаление статуса
