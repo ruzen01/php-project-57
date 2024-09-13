@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>All Labels</h1>
+    <h1>Метки</h1>
 
     <!-- Флеш-сообщения -->
     @if(session('success'))

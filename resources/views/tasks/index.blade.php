@@ -4,10 +4,6 @@
 <div class="container">
     <h1>Задачи</h1>
 
-    <!-- Кнопка для создания задачи, видна только авторизованным пользователям -->
-    @auth
-    <a href="{{ route('tasks.create') }}" class="btn btn-success mb-3">Create Task</a>
-    @endauth
 
     <!-- Форма фильтрации -->
     <form method="GET" action="{{ route('tasks.index') }}">
@@ -31,15 +27,15 @@
                 </select>
             </div>
             <div class="col">
-                <label for="assigned_to_id">Assigned To</label>
+                <label for="assigned_to_id">Исполнитель</label>
                 <select name="filter[assigned_to_id]" id="assigned_to_id" class="form-control">
-                    <option value="">All Assignees</option>
+                    <option value="">Исполнитель</option>
                     @foreach($users as $id => $name)
                         <option value="{{ $id }}" {{ request('filter.assigned_to_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="col">
+            <!-- <div class="col">
                 <label for="label_id">Labels</label>
                 <select name="filter[label]" id="label_id" class="form-control">
                     <option value="">All Labels</option>
@@ -47,10 +43,16 @@
                         <option value="{{ $id }}" {{ request('filter.label') == $id ? 'selected' : '' }}>{{ $name }}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> -->
+        <div class="col d-flex align-items-end"> <!-- Добавляем класс для вертикального выравнивания кнопки -->
+            <button type="submit" class="btn btn-primary me-2">Применить</button>
+            <!-- Кнопка для создания задачи, видна только авторизованным пользователям -->
+            @auth
+            <a href="{{ route('tasks.create') }}" class="btn btn-success">Создать задачу</a>
+            @endauth
         </div>
-        <button type="submit" class="btn btn-primary">Применить</button>
-    </form>
+        </div>
+        </form>
 
     <!-- Таблица с задачами -->
     <table class="table table-bordered mt-3">
@@ -63,7 +65,7 @@
                 <th>Исполнитель</th>
                 <th>Дата создания</th>
                 @auth <!-- Проверка на авторизацию -->
-                <th>Actions</th>
+                <th>Действия</th>
                 @endauth
             </tr>
         </thead>
@@ -79,7 +81,7 @@
                 @auth
                 <td>
                     <!-- Кнопка редактирования доступна всем авторизованным -->
-                    <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-primary">Изменить</a>
 
                     <!-- Кнопка удаления только для автора задачи -->
                     @if($task->created_by_id == auth()->id())
