@@ -72,9 +72,9 @@
                 @auth
                 <td>
                     <!-- Кнопка редактирования доступна всем авторизованным -->
-                    <a class="text-blue-600 hover:text-blue-900 no-underline" href="{{ route('tasks.edit', $task->id) }}">
-                        Изменить
-                    </a>
+                    <a class="text-blue-600 hover:text-blue-900" href="{{ route('tasks.edit', $task->id) }}" style="text-decoration: none;">
+    Изменить
+</a>
 
                     <!-- Кнопка удаления только для автора задачи -->
                     @if($task->created_by_id == auth()->id())
