@@ -19,28 +19,42 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
+        /* Устанавливаем белый фон и черный текст для всего документа */
+        body {
+            background-color: white;
+            color: black;
+        }
+
+        /* Меню навигации */
         .navbar {
-            background-color: #3c3c3c;
+            background-color: #f8f9fa; /* светлый фон для navbar */
         }
 
         .navbar-brand,
         .nav-link {
-            color: #adadad !important;
+            color: black !important; /* черный цвет текста */
         }
 
         .navbar-brand:hover,
         .nav-link:hover {
-            color: white !important;
+            color: gray !important; /* серый цвет при наведении */
         }
 
+        /* Стили для кнопок */
         .btn-primary {
             background-color: #0d6efd;
             border-color: #0d6efd;
+            color: white;
         }
 
         .btn-outline-primary {
             color: #0d6efd;
             border-color: #0d6efd;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
         }
     </style>
 </head>
