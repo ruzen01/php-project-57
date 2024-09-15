@@ -71,19 +71,27 @@
                 <td>{{ $task->created_at->format('d.m.Y') }}</td>
                 @auth
                 <td>
-                    <!-- Кнопка редактирования доступна всем авторизованным -->
-                    <a class="text-blue-600 hover:text-blue-900" href="{{ route('tasks.edit', $task->id) }}" style="text-decoration: none;">
-    Изменить
-</a>
+                    <!-- Ссылка для редактирования (синий текст, без подчеркивания) -->
+                    <a href="{{ route('tasks.edit', $task->id) }}" class="text-primary" style="text-decoration: none;">
+                        Изменить
+                    </a>
 
-                    <!-- Кнопка удаления только для автора задачи -->
+                    <!-- Ссылка для удаления (красный текст, без подчеркивания), только для автора задачи -->
                     @if($task->created_by_id == auth()->id())
-                    <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline;">
+                    <a href="#"
+                       class="text-danger"
+                       style="text-decoration: none;"
+                       onclick="event.preventDefault(); if(confirm('Вы уверены, что хотите удалить эту задачу?')) { document.getElementById('delete-task-form-{{ $task->id }}').submit(); }">
+                        Удалить
+                    </a>
+
+                    <!-- Скрытая форма для отправки DELETE-запроса -->
+                    <form id="delete-task-form-{{ $task->id }}" action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: none;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Удалить</button>
                     </form>
                     @endif
+                </td>
                 </td>
                 @endauth
             </tr>
