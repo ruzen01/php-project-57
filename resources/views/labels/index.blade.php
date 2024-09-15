@@ -43,17 +43,22 @@
                     <td>{{ $label->created_at->format('d.m.Y') }}</td>
                     @auth
                     <td>
-                        <!-- Кнопки "Изменить" и "Удалить" -->
+                        <!-- Ссылка для удаления (красный текст, без подчеркивания) -->
+                        <a href="#"
+                           class="text-danger"
+                           style="text-decoration: none;"
+                           onclick="event.preventDefault(); if(confirm('Вы уверены, что хотите удалить эту метку?')) { document.getElementById('delete-form-{{ $label->id }}').submit(); }">
+                            Удалить
+                        </a>
 
-                        <form action="{{ route('labels.destroy', $label->id) }}" method="POST" style="display:inline;">
+                        <!-- Скрытая форма для отправки DELETE-запроса -->
+                        <form id="delete-form-{{ $label->id }}" action="{{ route('labels.destroy', $label->id) }}" method="POST" style="display: none;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Вы уверены, что хотите удалить эту метку?');">
-                                Удалить
-                            </button>
                         </form>
-                        <a href="{{ route('labels.edit', $label->id) }}" class="btn btn-warning">Изменить</a>
+
+                        <!-- Ссылка для изменения (синий текст, без подчеркивания) -->
+                        <a href="{{ route('labels.edit', $label->id) }}" class="text-primary" style="text-decoration: none;">Изменить</a>
                         
                     </td>
                     @endauth
