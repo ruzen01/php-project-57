@@ -30,10 +30,17 @@
                     <a href="{{ route('login') }}" class="btn btn-primary me-2">Вход</a>
                     <a href="{{ route('register') }}" class="btn btn-primary me-2">Регистрация</a>
                 @else
-                    <!-- Кнопка "Выход" для авторизованных пользователей -->
-                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    <!-- Ссылка "Выход" для авторизованных пользователей -->
+                    <a href="{{ route('logout') }}"
+                       class="btn btn-outline-primary"
+                       dusk="logout-button"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        {{ __('Выход') }}
+                    </a>
+
+                    <!-- Скрытая форма для отправки POST-запроса -->
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
-                        <button type="submit" class="btn btn-outline-primary" dusk="logout-button">Выход</button>
                     </form>
                 @endguest
             </div>

@@ -12,7 +12,6 @@ exposeLocalhost = true
 [[ports]]
 localPort = 8000
 externalPort = 80
-exposeLocalhost = true
 
 [deployment]
 run = ["sh", "-c", "npm run dev"]
