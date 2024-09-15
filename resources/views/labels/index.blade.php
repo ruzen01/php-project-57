@@ -5,7 +5,7 @@
     <h1>Метки</h1>
 
     <!-- Флеш-сообщения -->
-    @if(session('success'))
+    <!-- @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
@@ -14,7 +14,7 @@
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
-    @endif
+    @endif -->
 
     <!-- Кнопка "Создать метку" доступна только для авторизованных пользователей -->
     @auth

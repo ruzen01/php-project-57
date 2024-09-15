@@ -42,21 +42,29 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        // Валидация данных
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+        // Валидация данных с пользовательскими сообщениями
+        $validated = $request->validate([
+            'name' => 'required|min:1|unique:tasks,name', // уникальность имени задачи
             'description' => 'nullable|string',
             'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя задачи должно содержать хотя бы один символ.',
+            'name.unique' => 'Задача с таким именем уже существует.',
+            'status_id.required' => 'Выберите статус задачи.',
+            'status_id.exists' => 'Выбранный статус недействителен.',
+            'assigned_to_id.exists' => 'Выбранный исполнитель недействителен.',
+            'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
 
         // Добавляем ID авторизованного пользователя
-        $validatedData['created_by_id'] = auth()->id();
+        $validated['created_by_id'] = auth()->id();
 
         // Создание задачи
-        $task = Task::create($validatedData);
+        $task = Task::create($validated);
 
         // Привязка меток к задаче, если они переданы
         if ($request->has('labels')) {

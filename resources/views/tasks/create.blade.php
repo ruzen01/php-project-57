@@ -20,7 +20,10 @@
         @csrf
         <div class="form-group">
             <label for="name">Имя</label>
-            <input type="text" name="name" id="name" class="form-control" required>
+            <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
+            @error('name')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="form-group">

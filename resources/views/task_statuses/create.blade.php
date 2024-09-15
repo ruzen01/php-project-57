@@ -10,11 +10,6 @@
                 <label for="name">Название статуса</label>
                 <input type="text" name="name" id="name" class="form-control">
 
-                <!-- Сообщение об ошибке под полем -->
-                @error('name')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-
             </div>
             <button type="submit" class="btn btn-primary">Создать</button>
         </form>
