@@ -28,35 +28,37 @@
 
         <div class="form-group">
             <label for="description">Описание</label>
-            <textarea name="description" id="description" class="form-control"></textarea>
+            <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
         </div>
 
         <div class="form-group">
             <label for="status_id">Статус</label>
             <select name="status_id" id="status_id" class="form-control">
+                <option value="" {{ old('status_id') == '' ? 'selected' : '' }}> </option>
                 @foreach ($task_statuses as $status)
-                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                    <option value="{{ $status->id }}" {{ old('status_id') == $status->id ? 'selected' : '' }}>
+                        {{ $status->name }}
+                    </option>
                 @endforeach
             </select>
+            @error('status_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
-
-        <!-- <div class="form-group">
-            <label for="created_by_id">Created By</label>
-            <select name="created_by_id" id="created_by_id" class="form-control">
-                @foreach ($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                @endforeach
-            </select>
-        </div> -->
 
         <div class="form-group">
             <label for="assigned_to_id">Исполнитель</label>
             <select name="assigned_to_id" id="assigned_to_id" class="form-control">
-                <option value="">None</option>
+                <option value="" {{ old('assigned_to_id') == '' ? 'selected' : '' }}> </option>
                 @foreach ($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    <option value="{{ $user->id }}" {{ old('assigned_to_id') == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
                 @endforeach
             </select>
+            @error('assigned_to_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Блок для выбора меток -->
@@ -64,7 +66,9 @@
             <label for="labels">Метки</label>
             <select name="labels[]" id="labels" class="form-control" multiple>
                 @foreach ($labels as $label)
-                    <option value="{{ $label->id }}">{{ $label->name }}</option>
+                    <option value="{{ $label->id }}" {{ in_array($label->id, old('labels', [])) ? 'selected' : '' }}>
+                        {{ $label->name }}
+                    </option>
                 @endforeach
             </select>
         </div>
