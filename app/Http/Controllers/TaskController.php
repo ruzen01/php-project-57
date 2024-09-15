@@ -71,7 +71,7 @@ class TaskController extends Controller
             $task->labels()->sync($request->labels);
         }
 
-        return redirect()->route('tasks.index')->with('success', 'Задача успешно создана.');
+        return redirect()->route('tasks.index')->with('success', 'Задача успешно создана');
     }
 
     public function edit(Task $task)
