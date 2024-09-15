@@ -72,6 +72,6 @@ class TaskStatusController extends Controller
 
         $task_status->delete();
 
-        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно удален');
+        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно удалён');
     }
 }
