@@ -24,11 +24,11 @@ class TaskController extends Controller
             ])
             ->with(['labels', 'status', 'creator', 'assignee']) // Заменяем 'executor' на 'assignee'
             ->get();
-    
+
         $task_statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
-    
+
         return view('tasks.index', compact('tasks', 'task_statuses', 'users', 'labels'));
     }
 
@@ -62,7 +62,7 @@ class TaskController extends Controller
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
-    
+
         return redirect()->route('tasks.index')->with('success', 'Задача успешно создана.');
     }
 

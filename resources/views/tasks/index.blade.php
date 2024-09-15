@@ -9,7 +9,7 @@
     <form method="GET" action="{{ route('tasks.index') }}">
         <div class="row mb-3">
             <div class="col">
-                <label for="status_id">Статус</label>
+                <label for="status_id"></label>
                 <select name="filter[status_id]" id="status_id" class="form-control">
                     <option value="">Статус</option>
                     @foreach($task_statuses as $id => $name)
@@ -18,7 +18,7 @@
                 </select>
             </div>
             <div class="col">
-                <label for="created_by_id">Автор</label>
+                <label for="created_by_id"></label>
                 <select name="filter[created_by_id]" id="created_by_id" class="form-control">
                     <option value="">Автор</option>
                     @foreach($users as $id => $name)
@@ -27,7 +27,7 @@
                 </select>
             </div>
             <div class="col">
-                <label for="assigned_to_id">Исполнитель</label>
+                <label for="assigned_to_id"></label>
                 <select name="filter[assigned_to_id]" id="assigned_to_id" class="form-control">
                     <option value="">Исполнитель</option>
                     @foreach($users as $id => $name)
@@ -39,7 +39,7 @@
                 <button type="submit" class="btn btn-primary me-2">Применить</button>
                 <!-- Кнопка для создания задачи, видна только авторизованным пользователям -->
                 @auth
-                <a href="{{ route('tasks.create') }}" class="btn btn-success">Создать задачу</a>
+                <a href="{{ route('tasks.create') }}" class="btn btn-primary me-1">Создать задачу</a>
                 @endauth
             </div>
         </div>
@@ -65,7 +65,7 @@
             <tr>
                 <td>{{ $task->id }}</td>
                 <td>{{ $task->status->name }}</td>
-                <td><a href="{{ route('tasks.show', $task->id) }}">{{ $task->name }}</a></td>
+                <td><a class="text-blue-600 hover:text-blue-900" href="{{ route('tasks.show', $task->id) }}" style="text-decoration: none;">{{ $task->name }}</a></td>
                 <td>{{ $task->creator ? $task->creator->name : 'Unknown' }}</td>
                 <td>{{ $task->assignee ? $task->assignee->name : 'Unassigned' }}</td>
                 <td>{{ $task->created_at->format('d.m.Y') }}</td>

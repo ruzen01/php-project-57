@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-   return redirect('/');
+    return redirect('/');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Профиль пользователя только для авторизованных пользователей
@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 // Публичные маршруты для просмотра задач, статусов и меток
 Route::get('task_statuses', [TaskStatusController::class, 'index'])->name('task_statuses.index'); // Публичный просмотр статусов
@@ -34,6 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('tasks', TaskController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('labels', LabelController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('task_statuses', TaskStatusController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
- });
+});
 
  Route::get('tasks/{id}', [TaskController::class, 'show'])->name('tasks.show'); // Публичный просмотр конкретной задачи

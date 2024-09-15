@@ -28,7 +28,7 @@
                 @guest
                     <!-- Кнопки для гостей -->
                     <a href="{{ route('login') }}" class="btn btn-primary me-2">Вход</a>
-                    <a href="{{ route('register') }}" class="btn btn-outline-primary">Регистрация</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary me-2">Регистрация</a>
                 @else
                     <!-- Кнопка "Выход" для авторизованных пользователей -->
                     <form method="POST" action="{{ route('logout') }}" class="d-inline">

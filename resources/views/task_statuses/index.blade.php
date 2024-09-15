@@ -6,7 +6,7 @@
 
     <!-- Кнопка "Создать новый статус" доступна только авторизованным пользователям -->
     @auth
-    <a href="{{ route('task_statuses.create') }}" class="btn btn-success mb-3">Создать статус</a>
+    <a href="{{ route('task_statuses.create') }}" class="btn btn-primary me-2">Создать статус</a>
     @endauth
 
     <!-- Таблица статусов -->
