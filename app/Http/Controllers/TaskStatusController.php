@@ -7,7 +7,6 @@ use App\Models\TaskStatus;
 
 class TaskStatusController extends Controller
 {
-
     // Отображение списка всех статусов
     public function index()
     {
