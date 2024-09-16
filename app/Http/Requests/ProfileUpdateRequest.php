@@ -13,6 +13,8 @@ class ProfileUpdateRequest extends FormRequest
 {
     public function rules(): array
     {
+        assert($this->user() instanceof User);
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
