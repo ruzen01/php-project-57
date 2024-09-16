@@ -8,7 +8,7 @@
     <form method="GET" action="{{ route('tasks.index') }}" class="mb-6">
         <div class="flex flex-col md:flex-row md:items-end gap-4">
             <div class="flex-1 md:w-1/4">
-                <label for="status_id" class="block text-gray-700 text-sm font-medium mb-1"></label>
+                <label for="status_id" class="block text-gray-700 text-sm font-medium mb-1">Статус</label>
                 <select name="filter[status_id]" id="status_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Статус</option>
                     @foreach($task_statuses as $id => $name)
@@ -17,7 +17,7 @@
                 </select>
             </div>
             <div class="flex-1 md:w-1/4">
-                <label for="created_by_id" class="block text-gray-700 text-sm font-medium mb-1"></label>
+                <label for="created_by_id" class="block text-gray-700 text-sm font-medium mb-1">Автор</label>
                 <select name="filter[created_by_id]" id="created_by_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Автор</option>
                     @foreach($users as $id => $name)
@@ -26,7 +26,7 @@
                 </select>
             </div>
             <div class="flex-1 md:w-1/4">
-                <label for="assigned_to_id" class="block text-gray-700 text-sm font-medium mb-1"></label>
+                <label for="assigned_to_id" class="block text-gray-700 text-sm font-medium mb-1">Исполнитель</label>
                 <select name="filter[assigned_to_id]" id="assigned_to_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Исполнитель</option>
                     @foreach($users as $id => $name)
@@ -34,20 +34,19 @@
                     @endforeach
                 </select>
             </div>
-            <div class="flex items-end">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Применить</button>
+            <div class="flex items-end gap-4">
+                <!-- Кнопка Применить -->
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 h-10">Применить</button>
+
+                <!-- Кнопка Создать задачу (расположена рядом) -->
+                @auth
+                <a href="{{ route('tasks.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 h-10">
+                    Создать задачу
+                </a>
+                @endauth
             </div>
         </div>
     </form>
-
-    <!-- Кнопка создания задачи -->
-    @auth
-    <div class="mb-4 text-right">
-        <a href="{{ route('tasks.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            Создать задачу
-        </a>
-    </div>
-    @endauth
 
     <!-- Таблица задач -->
     <div class="overflow-hidden rounded-lg shadow-md">
