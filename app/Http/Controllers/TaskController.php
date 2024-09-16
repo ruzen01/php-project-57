@@ -61,7 +61,7 @@ class TaskController extends Controller
         ]);
 
         // Добавляем ID авторизованного пользователя
-        $created_by_id = auth()->id();
+        $validated['created_by_id'] = auth()->id();
 
         // Создание задачи
         $task = Task::create($validated);
@@ -107,7 +107,7 @@ class TaskController extends Controller
         // Убедитесь, что пользователь аутентифицирован
         $created_by_id = auth()->id();
 
-        if (auth()->id() !== $task->created_by_id) {
+        if (auth()->user()->id !== $task->created_by_id) {
             return redirect()->route('tasks.index')->with('error', 'Only the creator can delete the task.');
         }
 
