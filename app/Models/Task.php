@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Task extends Model
 {
@@ -32,10 +33,10 @@ class Task extends Model
         return $this->belongsToMany(Label::class);
     }
 
-    public function scopeLabel($query, $labelId)
+    public function scopeLabel(Builder $query, int $labelId): Builder
     {
-        return $query->whereHas('labels', function ($q) use ($labelId) {
-            $q->where('id', $labelId);
+        return $query->whereHas('labels', function (Builder $q) use ($labelId) {
+            $q->where('labels.id', $labelId);
         });
     }
 }
