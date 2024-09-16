@@ -31,7 +31,7 @@
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $status->id }}</td>
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $status->name }}</td>
-                    <td class="px-4 py-2 text-sm text-gray-900">{{ $status->created_at->format('d.m.Y') }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ $status->created_at ? $task->created_at->format('d.m.Y') : 'Не указано' }}</td>
                     @auth
                     <td class="px-4 py-2 text-sm text-gray-900">
                         <a href="{{ route('task_statuses.edit', $status->id) }}" class="text-blue-500 hover:text-blue-700">Изменить</a>
