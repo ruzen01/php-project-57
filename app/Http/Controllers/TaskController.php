@@ -104,16 +104,18 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        // Убедитесь, что пользователь аутентифицирован
+        // Получаем аутентифицированного пользователя
         $authenticatedUser = auth()->user();
 
-        if ($authenticatedUser) {
+        // Проверяем, что пользователь аутентифицирован (не null)
+        if ($authenticatedUser !== null) {
             $created_by_id = $authenticatedUser->id;
         } else {
             // В случае если пользователь не аутентифицирован, можно вернуть ошибку или редирект
             return redirect()->route('login')->with('error', 'You must be logged in to perform this action.');
         }
 
+        // Удаляем задачу
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Задача успешно удалена');
