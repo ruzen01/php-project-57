@@ -7,11 +7,6 @@ use App\Models\TaskStatus;
 
 class TaskStatusController extends Controller
 {
-    // public function __construct()
-    // {
-    //     // Middleware auth применено ко всем методам
-    //     $this->middleware('auth');
-    // }
 
     // Отображение списка всех статусов
     public function index()

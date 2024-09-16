@@ -9,7 +9,7 @@
         <div class="flex flex-col md:flex-row md:items-end gap-4">
             <div class="flex-1 md:w-1/4">
                 <label for="status_id" class="block text-gray-700 text-sm font-medium mb-1"></label>
-                <select name="filter[status_id]" id="status_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <select name="filter[status_id]" id="status_id" class="block w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Статус</option>
                     @foreach($task_statuses as $id => $name)
                     <option value="{{ $id }}" {{ request('filter.status_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -18,7 +18,7 @@
             </div>
             <div class="flex-1 md:w-1/4">
                 <label for="created_by_id" class="block text-gray-700 text-sm font-medium mb-1"></label>
-                <select name="filter[created_by_id]" id="created_by_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <select name="filter[created_by_id]" id="created_by_id" class="block w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Автор</option>
                     @foreach($users as $id => $name)
                     <option value="{{ $id }}" {{ request('filter.created_by_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -27,7 +27,7 @@
             </div>
             <div class="flex-1 md:w-1/4">
                 <label for="assigned_to_id" class="block text-gray-700 text-sm font-medium mb-1"></label>
-                <select name="filter[assigned_to_id]" id="assigned_to_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <select name="filter[assigned_to_id]" id="assigned_to_id" class="block w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Исполнитель</option>
                     @foreach($users as $id => $name)
                     <option value="{{ $id }}" {{ request('filter.assigned_to_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
