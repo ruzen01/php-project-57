@@ -12,17 +12,21 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Защита методов посредником auth
+    }
+
     public function index(Request $request)
     {
-        // Загружаем задачи вместе с привязанными метками
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
                 AllowedFilter::exact('status_id'),
                 AllowedFilter::exact('created_by_id'),
                 AllowedFilter::exact('assigned_to_id'),
-                AllowedFilter::scope('label') // Фильтр по меткам
+                AllowedFilter::scope('label')
             ])
-            ->with(['labels', 'status', 'creator', 'assignee']) // Заменяем 'executor' на 'assignee'
+            ->with(['labels', 'status', 'creator', 'assignee'])
             ->get();
 
         $task_statuses = TaskStatus::pluck('name', 'id');
@@ -42,9 +46,8 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        // Валидация данных с пользовательскими сообщениями
         $validated = $request->validate([
-            'name' => 'required|min:1|unique:tasks,name', // уникальность имени задачи
+            'name' => 'required|min:1|unique:tasks,name',
             'description' => 'nullable|string',
             'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'nullable|exists:users,id',
@@ -60,13 +63,10 @@ class TaskController extends Controller
             'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
 
-        // Добавляем ID авторизованного пользователя
         $validated['created_by_id'] = auth()->id();
 
-        // Создание задачи
         $task = Task::create($validated);
 
-        // Привязка меток к задаче, если они переданы
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
@@ -104,10 +104,9 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        // Убедитесь, что пользователь аутентифицирован
-        $validated['created_by_id'] = auth()->id();
+        $created_by_id = auth()->id(); // Упрощаем создание переменной
 
-        if (auth()->user()->id !== $task->created_by_id) {
+        if ($created_by_id !== $task->created_by_id) {
             return redirect()->route('tasks.index')->with('error', 'Only the creator can delete the task.');
         }
 
@@ -118,7 +117,7 @@ class TaskController extends Controller
 
     public function show(int $id)
     {
-        $task = Task::with('labels')->findOrFail($id); // Подгружаем связанные метки
+        $task = Task::with('labels')->findOrFail($id);
         return view('tasks.show', compact('task'));
     }
 }
