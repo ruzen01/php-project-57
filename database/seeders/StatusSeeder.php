@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class StatusSeeder extends Seeder
 {
@@ -14,11 +15,13 @@ class StatusSeeder extends Seeder
     */
     public function run()
     {
+        $now = Carbon::now();  // Текущее время
+
         $statuses = [
-           ['name' => 'Новый'],
-           ['name' => 'В работе'],
-           ['name' => 'На тестировании'],
-           ['name' => 'Завершен']
+           ['name' => 'Новый', 'created_at' => $now],
+           ['name' => 'В работе', 'created_at' => $now],
+           ['name' => 'На тестировании', 'created_at' => $now],
+           ['name' => 'Завершен', 'created_at' => $now]
         ];
 
         foreach ($statuses as $status) {
