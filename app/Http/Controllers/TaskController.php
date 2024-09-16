@@ -113,13 +113,13 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Задача успешно удалена');
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $task = Task::with('labels')->findOrFail($id); // Подгружаем связанные метки
         return view('tasks.show', compact('task'));
     }
 
-    public function scopeLabel($query, $labelId)
+    public function scopeLabel(Builder $query, int $labelId)
     {
         return $query->whereHas('labels', function ($q) use ($labelId) {
             $q->where('id', $labelId);
