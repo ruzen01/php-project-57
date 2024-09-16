@@ -30,29 +30,18 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        // Получаем пользователя и сохраняем в переменную
-        $user = $request->user();
+        $user = $request->user(); // Теперь всегда возвращает аутентифицированного пользователя
 
-        // Проверяем, что пользователь аутентифицирован
-        if (!$user) {
-            return Redirect::route('login')->with('error', 'Пожалуйста, войдите в систему для обновления профиля.');
-        }
-
-        // Заполняем данные пользователя
         $user->fill($request->validated());
 
-        // Проверяем, изменилось ли поле email
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        // Сохраняем пользователя
         $user->save();
 
-        // Перенаправляем с сообщением об успешном обновлении
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
-
     /**
      * Delete the user's account.
      */
