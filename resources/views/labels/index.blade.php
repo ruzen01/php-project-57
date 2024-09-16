@@ -1,70 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Метки</h1>
+<div class="container mx-auto px-4">
+    <h1 class="text-2xl font-bold mb-6">Метки</h1>
 
     <!-- Флеш-сообщения -->
-    <!-- @if(session('success'))
-        <div class="alert alert-success">
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
             {{ session('success') }}
         </div>
     @endif
     @if(session('error'))
-        <div class="alert alert-danger">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
             {{ session('error') }}
         </div>
-    @endif -->
+    @endif
 
-    <!-- Кнопка "Создать метку" доступна только для авторизованных пользователей -->
+    <!-- Кнопка создания метки -->
     @auth
-        <a href="{{ route('labels.create') }}" class="btn btn-primary mb-3">Создать метку</a>
+    <div class="mb-4 text-right">
+        <a href="{{ route('labels.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Создать метку
+        </a>
+    </div>
     @endauth
 
     <!-- Таблица меток -->
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Имя</th>
-                <th>Описание</th>
-                <th>Дата создания</th>
-                @auth
-                <th>Действия</th>
-                @endauth
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($labels as $label)
+    <div class="overflow-hidden rounded-lg shadow-md">
+        <table class="min-w-full divide-y divide-gray-200 bg-white w-full">
+            <thead class="bg-gray-50">
                 <tr>
-                    <td>{{ $label->id }}</td>
-                    <td>{{ $label->name }}</td>
-                    <td>{{ $label->description ?? 'Описание отсутствует' }}</td>
-                    <td>{{ $label->created_at->format('d.m.Y') }}</td>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">ID</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Имя</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Описание</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Дата создания</th>
                     @auth
-                    <td>
-                        <!-- Ссылка для удаления (красный текст, без подчеркивания) -->
-                        <a href="#"
-                           class="text-danger"
-                           style="text-decoration: none;"
-                           onclick="event.preventDefault(); if(confirm('Вы уверены, что хотите удалить эту метку?')) { document.getElementById('delete-form-{{ $label->id }}').submit(); }">
-                            Удалить
-                        </a>
-
-                        <!-- Скрытая форма для отправки DELETE-запроса -->
-                        <form id="delete-form-{{ $label->id }}" action="{{ route('labels.destroy', $label->id) }}" method="POST" style="display: none;">
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Действия</th>
+                    @endauth
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @foreach ($labels as $label)
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ $label->id }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ $label->name }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ $label->description ?? 'Описание отсутствует' }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ $label->created_at->format('d.m.Y') }}</td>
+                    @auth
+                    <td class="px-4 py-2 text-sm text-gray-900">
+                        <a href="{{ route('labels.edit', $label->id) }}" class="text-blue-500 hover:text-blue-700">Изменить</a>
+                        <a href="#" class="text-red-500 hover:text-red-700 ml-2" onclick="event.preventDefault(); if(confirm('Вы уверены, что хотите удалить эту метку?')) { document.getElementById('delete-form-{{ $label->id }}').submit(); }">Удалить</a>
+                        <form id="delete-form-{{ $label->id }}" action="{{ route('labels.destroy', $label->id) }}" method="POST" class="hidden">
                             @csrf
                             @method('DELETE')
                         </form>
-
-                        <!-- Ссылка для изменения (синий текст, без подчеркивания) -->
-                        <a href="{{ route('labels.edit', $label->id) }}" class="text-primary" style="text-decoration: none;">Изменить</a>
-                        
                     </td>
                     @endauth
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection
