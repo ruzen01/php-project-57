@@ -11,6 +11,10 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display the user's profile form.
      */
@@ -26,14 +30,26 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        // Получаем пользователя и сохраняем в переменную
+        $user = $request->user();
 
-        if ($user && $user->email_verified_at) {
-            $request->user()->email_verified_at = null;
+        // Проверяем, что пользователь аутентифицирован
+        if (!$user) {
+            return Redirect::route('login')->with('error', 'Пожалуйста, войдите в систему для обновления профиля.');
         }
 
-        $request->user()->save();
+        // Заполняем данные пользователя
+        $user->fill($request->validated());
 
+        // Проверяем, изменилось ли поле email
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        // Сохраняем пользователя
+        $user->save();
+
+        // Перенаправляем с сообщением об успешном обновлении
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
