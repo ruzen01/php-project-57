@@ -105,7 +105,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         // Убедитесь, что пользователь аутентифицирован
-        $authenticatedUser = auth()->user(); 
+        $authenticatedUser = auth()->user();
 
         if ($authenticatedUser) {
             $created_by_id = $authenticatedUser->id;
