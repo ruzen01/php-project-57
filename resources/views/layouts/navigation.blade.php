@@ -1,5 +1,6 @@
  <nav class="shadow-sm bg-white dark:bg-gray-800">
      <div class="container mx-auto flex justify-between items-center py-4">
+
          <!-- Логотип -->
          <a class="text-xl font-bold text-gray-800 dark:text-white" href="{{ url('/') }}">Менеджер задач</a>
 

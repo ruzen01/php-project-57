@@ -8,11 +8,8 @@
 
     <title>Менеджер задач</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet">
-
     <!-- Styles -->
+    <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -20,6 +17,7 @@
         body {
             background-color: white;
             color: black;
+            font-family: 'Figtree', sans-serif; /* Applying the Figtree font */
         }
     </style>
 </head>
