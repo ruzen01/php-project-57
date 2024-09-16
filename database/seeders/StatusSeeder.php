@@ -12,20 +12,20 @@ class StatusSeeder extends Seeder
     *
     * @return void
     */
-   public function run()
-   {
-       $statuses = [
+    public function run()
+    {
+        $statuses = [
            ['name' => 'Новый'],
            ['name' => 'В работе'],
            ['name' => 'На тестировании'],
            ['name' => 'Завершен']
-       ];
+        ];
 
-       foreach ($statuses as $status) {
-           DB::table('task_statuses')->updateOrInsert(
-               ['name' => $status['name']], // Условие для обновления
-               $status                       // Данные для вставки или обновления
-           );
-       }
-   }
+        foreach ($statuses as $status) {
+            DB::table('task_statuses')->updateOrInsert(
+                ['name' => $status['name']], // Условие для обновления
+                $status                       // Данные для вставки или обновления
+            );
+        }
+    }
 }
