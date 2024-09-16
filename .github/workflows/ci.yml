@@ -1,36 +1,81 @@
-name: ci
+name: Run tests and linter
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Setup PHP
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+        options: --env MYSQL_ALLOW_EMPTY_PASSWORD=yes
+
+    steps:
+      # Checkout the code from the repo
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up PHP
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
-      - name: Install
-        run: make install
-      - name: Setup
-        run: make setup
-      - name: Check
-        run: make check
-      - name: Run test & publish code coverage
-        uses: paambaati/codeclimate-action@v5.0.0
-        # Add Code Climate secret key
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          php-version: '8.0' # Укажите нужную вам версию PHP
+          extensions: mbstring, pdo, pdo_mysql, dom, xml
+          coverage: none
+
+      # Install composer dependencies
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      # Copy the .env.example to .env and set necessary configurations
+      - name: Prepare the environment file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # Run migrations and seeders
+      - name: Set up database
+        run: |
+          php artisan migrate --force
+          php artisan db:seed
+
+      # Run PHPUnit tests
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit --testdox
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
-          coverageCommand: make test-coverage
-          coverageLocations: ${{github.workspace}}/build/logs/clover.xml:clover
-          debug: true
+          php-version: '8.0' # Укажите нужную версию PHP
+
+      # Install composer dependencies
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      # Run PHP CS Fixer for code style checking
+      - name: Run PHP CS Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
