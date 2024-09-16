@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="container">
-    <h1>Задачи</h1>
+    <h1 class="text-2xl font-bold mb-4">Задачи</h1>
 
 
     <!-- Форма фильтрации -->
     <form method="GET" action="{{ route('tasks.index') }}">
         <div class="row mb-3">
             <div class="col">
-                <label for="status_id"></label>
+                <label for="status_id" class="form-label">Статус</label>
                 <select name="filter[status_id]" id="status_id" class="form-control">
                     <option value="">Статус</option>
                     @foreach($task_statuses as $id => $name)
@@ -18,7 +18,7 @@
                 </select>
             </div>
             <div class="col">
-                <label for="created_by_id"></label>
+                <label for="created_by_id" class="form-label">Автор</label>
                 <select name="filter[created_by_id]" id="created_by_id" class="form-control">
                     <option value="">Автор</option>
                     @foreach($users as $id => $name)
@@ -27,7 +27,7 @@
                 </select>
             </div>
             <div class="col">
-                <label for="assigned_to_id"></label>
+                <label for="assigned_to_id" class="form-label">Исполнитель</label>
                 <select name="filter[assigned_to_id]" id="assigned_to_id" class="form-control">
                     <option value="">Исполнитель</option>
                     @foreach($users as $id => $name)
@@ -49,28 +49,28 @@
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Статус</th>
-                <th>Имя</th>
-                <th>Автор</th>
-                <th>Исполнитель</th>
-                <th>Дата создания</th>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Статус</th>
+                <th class="px-4 py-2">Имя</th>
+                <th class="px-4 py-2">Автор</th>
+                <th class="px-4 py-2">Исполнитель</th>
+                <th class="px-4 py-2">Дата создания</th>
                 @auth <!-- Проверка на авторизацию -->
-                <th>Действия</th>
+                <th class="px-4 py-2">Действия</th>
                 @endauth
             </tr>
         </thead>
         <tbody>
             @foreach($tasks as $task)
             <tr>
-                <td>{{ $task->id }}</td>
-                <td>{{ $task->status->name }}</td>
-                <td><a class="text-blue-600 hover:text-blue-900" href="{{ route('tasks.show', $task->id) }}" style="text-decoration: none;">{{ $task->name }}</a></td>
-                <td>{{ $task->creator ? $task->creator->name : 'Unknown' }}</td>
-                <td>{{ $task->assignee ? $task->assignee->name : 'Unassigned' }}</td>
-                <td>{{ $task->created_at->format('d.m.Y') }}</td>
+                <td class="px-4 py-2">{{ $task->id }}</td>
+                <td class="px-4 py-2">{{ $task->status->name }}</td>
+                <td class="px-4 py-2"><a class="text-blue-600 hover:text-blue-900" href="{{ route('tasks.show', $task->id) }}" style="text-decoration: none;">{{ $task->name }}</a></td>
+                <td class="px-4 py-2">{{ $task->creator ? $task->creator->name : 'Unknown' }}</td>
+                <td class="px-4 py-2">{{ $task->assignee ? $task->assignee->name : 'Unassigned' }}</td>
+                <td class="px-4 py-2">{{ $task->created_at->format('d.m.Y') }}</td>
                 @auth
-                <td>
+                <td class="px-4 py-2">
                     <!-- Ссылка для редактирования (синий текст, без подчеркивания) -->
                     <a href="{{ route('tasks.edit', $task->id) }}" class="text-primary" style="text-decoration: none;">
                         Изменить
