@@ -104,6 +104,9 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        // Убедитесь, что пользователь аутентифицирован
+        $validated['created_by_id'] = auth()->id();
+
         if (auth()->user()->id !== $task->created_by_id) {
             return redirect()->route('tasks.index')->with('error', 'Only the creator can delete the task.');
         }
@@ -117,12 +120,5 @@ class TaskController extends Controller
     {
         $task = Task::with('labels')->findOrFail($id); // Подгружаем связанные метки
         return view('tasks.show', compact('task'));
-    }
-
-    public function scopeLabel(Builder $query, int $labelId)
-    {
-        return $query->whereHas('labels', function ($q) use ($labelId) {
-            $q->where('id', $labelId);
-        });
     }
 }
