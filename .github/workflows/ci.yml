@@ -35,7 +35,10 @@ jobs:
 
       - name: Check Xdebug installation
         run: php -m | grep xdebug
-
+        
+      - name: Run tests with phpdbg
+        run: phpdbg -qrr ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+      
       # Publish coverage to Code Climate (after running tests)
       - name: Code Climate Reporter (after-build)
         uses: paambaati/codeclimate-action@v5
