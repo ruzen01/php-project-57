@@ -1,66 +1,76 @@
-name: Run tests and linter
+        name: Laravel CI
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+        on:
+          push:
+            branches:
+              - main  # Запускать CI при пуше в основную ветку (можно указать другую ветку)
+          pull_request:
+            branches:
+              - main  # Запускать CI при создании pull request в основную ветку
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+        jobs:
+          test:
 
-    steps:
-      # Checkout the code from the repo
-      - name: Checkout code
-        uses: actions/checkout@v2
+            runs-on: ubuntu-latest
 
-      # Set up PHP
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0' # Укажите нужную вам версию PHP
-          extensions: mbstring, pdo, pdo_mysql, dom, xml
-          coverage: none
+            services:
+              mysql:
+                image: mysql:8
+                env:
+                  MYSQL_ROOT_PASSWORD: password
+                  MYSQL_DATABASE: testing_db
+                options: >-
+                  --health-cmd="mysqladmin ping --silent"
+                  --health-interval=10s
+                  --health-timeout=5s
+                  --health-retries=3
+                ports:
+                  - 3306:3306
+                volumes:
+                  - /var/lib/mysql
+                options: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
-      # Install composer dependencies
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+            steps:
+              - name: Checkout code
+                uses: actions/checkout@v3
 
-      # Copy the .env.example to .env and set necessary configurations
-      - name: Prepare the environment file
-        run: |
-          cp .env.example .env
-          php artisan key:generate
+              - name: Set up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                  php-version: 8.1  # Укажите вашу версию PHP
+                  extensions: mbstring, bcmath, pdo_mysql
+                  coverage: none
 
-      # Run migrations and seeders
-      - name: Set up database
-        run: |
-          php artisan migrate --force
-          php artisan db:seed
+              - name: Install Composer dependencies
+                run: composer install --prefer-dist --no-progress --no-suggest --ansi
 
-      # Run PHPUnit tests
-      - name: Run PHPUnit tests
-        run: vendor/bin/phpunit --testdox
+              - name: Copy .env.example to .env
+                run: cp .env.example .env
 
-  lint:
-    runs-on: ubuntu-latest
+              - name: Generate application key
+                run: php artisan key:generate
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+              - name: Create database
+                run: |
+                  php artisan migrate --env=testing
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0' # Укажите нужную версию PHP
+              - name: Run tests
+                run: php artisan test --env=testing
 
-      # Install composer dependencies
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+          lint:
+            runs-on: ubuntu-latest
 
-      # Run PHP CS Fixer for code style checking
-      - name: Run PHP CS Fixer
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+            steps:
+              - name: Checkout code
+                uses: actions/checkout@v3
+
+              - name: Set up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                  php-version: 8.1  # Укажите вашу версию PHP
+
+              - name: Install Composer dependencies
+                run: composer install --prefer-dist --no-progress --no-suggest --ansi
+
+              - name: Run PHP CS Fixer (Lint)
+                run: vendor/bin/php-cs-fixer fix --dry-run --diff
