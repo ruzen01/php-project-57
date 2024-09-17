@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1726577662">
-  <project timestamp="1726577662">
+<coverage generated="1726578988">
+  <project timestamp="1726578988">
     <package name="App\Http\Controllers\Auth">
       <file name="/home/zen/php-project-57/app/Http/Controllers/Auth/AuthenticatedSessionController.php">
         <class name="App\Http\Controllers\Auth\AuthenticatedSessionController" namespace="App\Http\Controllers\Auth">
@@ -312,7 +312,7 @@
       </file>
       <file name="/home/zen/php-project-57/app/Http/Controllers/TaskStatusController.php">
         <class name="App\Http\Controllers\TaskStatusController" namespace="App\Http\Controllers">
-          <metrics complexity="7" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="21" elements="28" coveredelements="26"/>
+          <metrics complexity="7" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="21" elements="30" coveredelements="26"/>
         </class>
         <line num="11" type="method" name="index" visibility="public" complexity="1" crap="1" count="2"/>
         <line num="13" type="stmt" count="2"/>
@@ -337,12 +337,14 @@
         <line num="53" type="stmt" count="1"/>
         <line num="55" type="stmt" count="1"/>
         <line num="57" type="stmt" count="1"/>
-        <line num="61" type="method" name="destroy" visibility="public" complexity="2" crap="2.06" count="1"/>
+        <line num="61" type="method" name="destroy" visibility="public" complexity="2" crap="2.50" count="1"/>
         <line num="63" type="stmt" count="1"/>
         <line num="64" type="stmt" count="0"/>
-        <line num="67" type="stmt" count="1"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
         <line num="69" type="stmt" count="1"/>
-        <metrics loc="72" ncloc="61" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="21" elements="28" coveredelements="26"/>
+        <line num="71" type="stmt" count="1"/>
+        <metrics loc="74" ncloc="63" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="21" elements="30" coveredelements="26"/>
       </file>
     </package>
     <package name="App\Http\Requests\Auth">
@@ -480,6 +482,6 @@
         <metrics loc="18" ncloc="15" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
       </file>
     </package>
-    <metrics files="23" loc="1037" ncloc="885" classes="22" methods="56" coveredmethods="41" conditionals="0" coveredconditionals="0" statements="271" coveredstatements="214" elements="327" coveredelements="255"/>
+    <metrics files="23" loc="1039" ncloc="887" classes="22" methods="56" coveredmethods="41" conditionals="0" coveredconditionals="0" statements="273" coveredstatements="214" elements="329" coveredelements="255"/>
   </project>
 </coverage>
