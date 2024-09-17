@@ -60,7 +60,7 @@ class RoutesTest extends TestCase
         $response->assertStatus(200); // Проверяем, что публичный маршрут задач доступен
     }
 
-    public function TestPublicLabelsRouteIsAccessible()
+    public function testPublicLabelsRouteIsAccessible()
     {
         $response = $this->get(route('labels.index'));
         $response->assertStatus(200); // Проверяем, что публичный маршрут меток доступен
