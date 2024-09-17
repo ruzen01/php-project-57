@@ -1,87 +1,41 @@
-                        name: tests and lint
+name: project-check
 
-                        on:
-                          push:
-                            branches:
-                              - main
-                          pull_request:
-                            branches:
-                              - main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
-                        jobs:
-                          test:
-                            runs-on: ubuntu-latest
+permissions:
+  contents: read
 
-                            services:
-                              postgres:
-                                image: postgres:13
-                                env:
-                                  POSTGRES_USER: postgres
-                                  POSTGRES_PASSWORD: password
-                                  POSTGRES_DB: testing_db
-                                options: >-
-                                  --health-cmd="pg_isready"
-                                  --health-interval=10s
-                                  --health-timeout=5s
-                                  --health-retries=5
-                                ports:
-                                  - 5432:5432
-                                volumes:
-                                  - /var/lib/postgresql/data
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-                            steps:
-                              - name: Checkout code
-                                uses: actions/checkout@v3
-                                with:
-                                  node-version: '20'  # Обновляем до Node.js 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-                              - name: Set up PHP
-                                uses: shivammathur/setup-php@v2
-                                with:
-                                  php-version: 8.1
-                                  extensions: mbstring, bcmath, pdo_pgsql
-                                  coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
 
-                              - name: Install Composer dependencies
-                                run: composer install --prefer-dist --no-progress --no-suggest --ansi
+      - name: Install
+        run: make install
 
-                              - name: Copy .env.example to .env
-                                run: cp .env.example .env
+      - name: Setup
+        run: make setup
 
-                              - name: Set environment variables
-                                run: |
-                                  echo "DB_CONNECTION=pgsql" >> .env
-                                  echo "DB_HOST=127.0.0.1" >> .env
-                                  echo "DB_PORT=5432" >> .env
-                                  echo "DB_DATABASE=testing_db" >> .env
-                                  echo "DB_USERNAME=postgres" >> .env
-                                  echo "DB_PASSWORD=password" >> .env
+      - name: Check
+        run: make check
 
-                              - name: Generate application key
-                                run: php artisan key:generate
-
-                              - name: Create database
-                                run: php artisan migrate --env=testing
-
-                              - name: Run tests
-                                run: php artisan test --env=testing
-
-                          lint:
-                            runs-on: ubuntu-latest
-
-                            steps:
-                              - name: Checkout code
-                                uses: actions/checkout@v3
-                                with:
-                                  node-version: '20'  # Обновляем до Node.js 20
-
-                              - name: Set up PHP
-                                uses: shivammathur/setup-php@v2
-                                with:
-                                  php-version: 8.1
-
-                              - name: Install Composer dependencies
-                                run: composer install --prefer-dist --no-progress --no-suggest --ansi
-
-                              - name: Run PHP CS Fixer (Lint)
-                                run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      - name: Run test & publish code coverage
+        uses: paambaati/codeclimate-action@v5.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          coverageLocations: ${{ github.workspace }}/build/logs/clover.xml:clover
+          debug: true
