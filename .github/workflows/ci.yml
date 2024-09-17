@@ -40,9 +40,9 @@
                     sudo phpenmod pcov
                     sudo systemctl restart php8.2-fpm
 
-                # Disable Xdebug if it's enabled
-                - name: Disable Xdebug
-                  run: phpdismod xdebug
+                # # Disable Xdebug if it's enabled
+                # - name: Disable Xdebug
+                #   run: phpdismod xdebug
 
                 # Run tests with PCOV
                 - name: Run tests with PCOV
