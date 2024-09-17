@@ -60,14 +60,14 @@ class RoutesTest extends TestCase
         $response->assertStatus(200); // Проверяем, что публичный маршрут задач доступен
     }
 
-    public function test_public_labels_route_is_accessible()
+    public function TestPublicLabelsRouteIsAccessible()
     {
         $response = $this->get(route('labels.index'));
         $response->assertStatus(200); // Проверяем, что публичный маршрут меток доступен
     }
 
     // Тесты на защищенные маршруты задач (создание, редактирование, удаление)
-    public function test_task_routes_require_authentication()
+    public function testTaskRoutesRequireAuthentication()
     {
         // Проверяем, что без авторизации доступ запрещен
         $response = $this->get(route('tasks.create'));
@@ -82,7 +82,7 @@ class RoutesTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_label_routes_require_authentication()
+    public function testLabelRoutesRequireAuthentication()
     {
         // Проверяем, что без авторизации доступ запрещен
         $response = $this->get(route('labels.create'));
@@ -97,7 +97,7 @@ class RoutesTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_task_status_routes_require_authentication()
+    public function testTaskStatusRoutesRequireAuthentication()
     {
         // Проверяем, что без авторизации доступ запрещен
         $response = $this->get(route('task_statuses.create'));
@@ -113,7 +113,7 @@ class RoutesTest extends TestCase
     }
 
     // Тест на публичный просмотр конкретной задачи
-    public function test_public_task_show_route_is_accessible()
+    public function testPublicTaskShowRouteIsAccessible()
     {
         $user = User::factory()->create(); // Создаем пользователя
         $status = \App\Models\TaskStatus::factory()->create(); // Создаем статус задачи
