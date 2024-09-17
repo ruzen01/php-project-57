@@ -61,7 +61,9 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $task_status)
     {
         if ($task_status->tasks()->count() > 0) {
-            return redirect()->route('task_statuses.index')->with('error', 'Невозможно удалить статус, связанный с задачей');
+            return redirect()
+                ->route('task_statuses.index')
+                ->with('error', 'Невозможно удалить статус, связанный с задачей');
         }
 
         $task_status->delete();
