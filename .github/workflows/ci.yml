@@ -36,11 +36,10 @@ jobs:
       - name: Setup environment
         run: make setup
 
-      - name: Debug Xdebug Status
-        run: |
-        php -m
-        mkdir -p build/logs
-        XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml -v
+      # - name: Debug Xdebug Status
+      #   run: |
+      #   php -m
+      #   XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml -v
 
       # Publish coverage to Code Climate (after running tests)
       - name: Code Climate Reporter (after-build)
