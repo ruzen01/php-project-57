@@ -1,5 +1,5 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
      bootstrap="vendor/autoload.php"
      colors="true"
      stopOnFailure="false"
@@ -20,7 +20,7 @@
 </coverage>
 
 <logging>
-    <log type="coverage-clover" target="build/logs/clover.xml"/>
+    <coverage-clover outputFile="build/logs/clover.xml"/>
 </logging>
 
 <php>
