@@ -29,7 +29,6 @@ jobs:
       - name: Run linter
         run: make lint
 
-      # Run setup before running tests and coverage
       - name: Setup environment
         run: make setup
 
