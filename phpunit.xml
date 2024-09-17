@@ -13,14 +13,12 @@
     </testsuite>
 </testsuites>
 
-<coverage>
-    <include>
-        <directory suffix=".php">app</directory>
-    </include>
+<coverage processUncoveredFiles="true">
+    <directory suffix=".php">app</directory>
 </coverage>
 
 <logging>
-    <coverage-clover outputFile="build/logs/clover.xml"/>
+    <log type="coverage-clover" target="build/logs/clover.xml"/>
 </logging>
 
 <php>
