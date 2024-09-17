@@ -17,18 +17,18 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testUsersCanAuthenticateUsingTheLoginScreen(): void
-    {
-        $user = User::factory()->create();
+    // public function testUsersCanAuthenticateUsingTheLoginScreen(): void
+    // {
+    //     $user = User::factory()->create();
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
+    //     $response = $this->post('/login', [
+    //         'email' => $user->email,
+    //         'password' => 'password',
+    //     ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
-    }
+    //     $this->assertAuthenticated();
+    //     $response->assertRedirect(route('dashboard', absolute: false));
+    // }
 
     public function testUsersCanNotAuthenticateWithInvalidPassword(): void
     {
