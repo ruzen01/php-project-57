@@ -1,5 +1,5 @@
 # Name of workflow
-name: PHP CI
+name: CI
 
 # Trigger the workflow on push or pull request
 on:
@@ -29,9 +29,6 @@ jobs:
       - name: Run linter
         run: make lint
 
-      # - name: Install Xdebug
-      #   run: sudo apt-get install php-xdebug
-
       # Run setup before running tests and coverage
       - name: Setup environment
         run: make setup
@@ -39,15 +36,6 @@ jobs:
       - name: Check Xdebug installation
         run: php -m | grep xdebug
 
-      - name: Debug Xdebug Status
-        run: |
-          php -m
-          XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
-        
-      - name: Run tests with coverage
-        run: XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
-
-      
       # Publish coverage to Code Climate (after running tests)
       - name: Code Climate Reporter (after-build)
         uses: paambaati/codeclimate-action@v5
