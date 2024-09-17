@@ -36,14 +36,14 @@ jobs:
       - name: Setup environment
         run: make setup
 
+      - name: Check Xdebug installation
+        run: php -m | grep xdebug
+
       - name: Debug Xdebug Status
         run: |
           php -m
           XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
         
-      - name: Check Xdebug installation
-        run: php -m | grep xdebug
-
       - name: Run tests with coverage
         run: XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
 
