@@ -1,59 +1,48 @@
-          # Name of workflow
-          name: CI
+                    # Название рабочего процесса
+                    name: CI
+                    # Запускать рабочий процесс при push или pull request
+                    on:
+                      push:
+                      pull_request:
+                    jobs:
+                      build:
+                        runs-on: ubuntu-latest
+                        steps:
+                          # Клонирование репозитория
+                          - uses: actions/checkout@v3
 
-          # Trigger the workflow on push or pull request
-          on:
-            push:
-            pull_request:
+                          # Установка PHP и Xdebug
+                          - name: Setup PHP
+                            uses: shivammathur/setup-php@v2
+                            with:
+                              php-version: '8.2'
+                              extensions: xdebug
+                              ini-values: |
+                                xdebug.mode = coverage
+                                xdebug.start_with_request = yes
 
-          jobs:
-            build:
-              runs-on: ubuntu-latest
+                          # Установка зависимостей
+                          - name: Install
+                            run: make install
 
-              steps:
-                # Checkout repository under GitHub workspace
-                - uses: actions/checkout@v3
+                          # Запуск линтера
+                          - name: Run linter
+                            run: make lint
 
-                # Setup PHP environment
-                - name: Setup PHP
-                  uses: shivammathur/setup-php@v2
-                  with:
-                    php-version: '8.2'
-                    extensions: xdebug
+                          # Настройка окружения
+                          - name: Setup environment
+                            run: make setup
 
-                # Install dependencies
-                - name: Install
-                  run: make install
+                          # Запуск тестов с Xdebug
+                          - name: Run tests with Xdebug
+                            run: php ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
-                # Run linter
-                - name: Run linter
-                  run: make lint
-
-                # Setup environment
-                - name: Setup environment
-                  run: make setup
-
-                # Setup PCOV
-                - name: Setup PCOV
-                  run: |
-                    sudo apt-get install php-pcov
-                    sudo phpenmod pcov
-                    sudo systemctl restart php8.2-fpm
-
-                # # Disable Xdebug if it's enabled
-                # - name: Disable Xdebug
-                #   run: phpdismod xdebug
-
-                # Run tests with PCOV
-                - name: Run tests with PCOV
-                  run: php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-
-                # Publish coverage to Code Climate (after running tests)
-                - name: Code Climate Reporter (after-build)
-                  uses: paambaati/codeclimate-action@v5
-                  with:
-                    coverageCommand: make test-coverage
-                    coverageLocations: build/logs/clover.xml:clover
-                    debug: true
-                  env:
-                    CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+                          # Публикация покрытия в Code Climate
+                          - name: Code Climate Reporter (after-build)
+                            uses: paambaati/codeclimate-action@v5
+                            with:
+                              coverageCommand: make test-coverage
+                              coverageLocations: build/logs/clover.xml:clover
+                              debug: true
+                            env:
+                              CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
