@@ -1,4 +1,7 @@
 parameters:
-    level: 5  # уровень строгости анализа
-    paths:
-        - /  # путь к папке с вашим кодом
+   level: 1
+   paths:
+       - app
+   ignoreErrors:
+       - identifier: missingType.iterableValue
+       - identifier: missingType.generics

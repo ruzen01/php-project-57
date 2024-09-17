@@ -56,7 +56,7 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "phpstan": "phpstan analyse --memory-limit=2G -c phpstan.neon"
+           "phpstan": "phpstan analyse --memory-limit=2G --ansi -c phpstan.neon"
     },
     "extra": {
         "laravel": {
