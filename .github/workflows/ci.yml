@@ -28,6 +28,9 @@ jobs:
       - name: Run linter
         run: make lint
 
+      - name: Install Xdebug
+        run: sudo apt-get install php-xdebug
+
       # Run setup before running tests and coverage
       - name: Setup environment
         run: make setup
