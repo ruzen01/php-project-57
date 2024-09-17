@@ -1,57 +1,58 @@
-# Name of workflow
-name: CI
+          # Name of workflow
+          name: CI
 
-# Trigger the workflow on push or pull request
-on:
-  push:
-  pull_request:
+          # Trigger the workflow on push or pull request
+          on:
+            push:
+            pull_request:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+          jobs:
+            build:
+              runs-on: ubuntu-latest
 
-    steps:
-      # Checkout repository under GitHub workspace
-      - uses: actions/checkout@v3
+              steps:
+                # Checkout repository under GitHub workspace
+                - uses: actions/checkout@v3
 
-      # Setup PHP environment
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: xdebug
+                # Setup PHP environment
+                - name: Setup PHP
+                  uses: shivammathur/setup-php@v2
+                  with:
+                    php-version: '8.2'
+                    extensions: xdebug
 
-      # Install dependencies
-      - name: Install
-        run: make install
+                # Install dependencies
+                - name: Install
+                  run: make install
 
-      # Run linter
-      - name: Run linter
-        run: make lint
-        
-      - name: Setup environment
-        run: make setup
+                # Run linter
+                - name: Run linter
+                  run: make lint
 
-        # Setup PCOV
-        - name: Setup PCOV
-          run: |
-            sudo apt-get install php-pcov
-            phpenmod pcov
+                # Setup environment
+                - name: Setup environment
+                  run: make setup
 
-        # Disable Xdebug if it's enabled
-        - name: Disable Xdebug
-          run: phpdismod xdebug
+                # Setup PCOV
+                - name: Setup PCOV
+                  run: |
+                    sudo apt-get install php-pcov
+                    phpenmod pcov
 
-        # Run tests with PCOV
-        - name: Run tests with PCOV
-          run: php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+                # Disable Xdebug if it's enabled
+                - name: Disable Xdebug
+                  run: phpdismod xdebug
 
-      # Publish coverage to Code Climate (after running tests)
-      - name: Code Climate Reporter (after-build)
-        uses: paambaati/codeclimate-action@v5
-        with:
-          coverageCommand: make test-coverage
-          coverageLocations: build/logs/clover.xml:clover
-          debug: true
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+                # Run tests with PCOV
+                - name: Run tests with PCOV
+                  run: php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+                # Publish coverage to Code Climate (after running tests)
+                - name: Code Climate Reporter (after-build)
+                  uses: paambaati/codeclimate-action@v5
+                  with:
+                    coverageCommand: make test-coverage
+                    coverageLocations: build/logs/clover.xml:clover
+                    debug: true
+                  env:
+                    CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
