@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         backupGlobals="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
-         processIsolation="false"
          stopOnFailure="false"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.1/phpunit.xsd"
-         cacheDirectory=".phpunit.cache"
-         backupStaticProperties="false">
+         cacheDirectory=".phpunit.cache">
 
     <testsuites>
         <testsuite name="Unit">
@@ -27,16 +24,7 @@
         <server name="SESSION_DRIVER" value="array"/>
     </php>
 
-    <source>
-        <include>
-            <directory suffix=".php">./app</directory>
-        </include>
-    </source>
-
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./app</directory>
-        </include>
-    </coverage>
-
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
 </phpunit>
