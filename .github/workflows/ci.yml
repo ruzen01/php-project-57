@@ -36,6 +36,11 @@ jobs:
       - name: Setup environment
         run: make setup
 
+      - name: Debug Coverage Generation
+        run: |
+          php -m
+          XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
+
       # Publish coverage to Code Climate (after running tests)
       - name: Code Climate Reporter (after-build)
         uses: paambaati/codeclimate-action@v5
