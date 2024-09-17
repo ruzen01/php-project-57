@@ -24,6 +24,7 @@
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
+        "phpstan/phpstan": "^1.12",
         "phpunit/phpunit": "^11.0.1",
         "squizlabs/php_codesniffer": "^3.10"
     },
@@ -54,7 +55,8 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
-        ]
+        ],
+        "phpstan": "phpstan analyse --memory-limit=2G -c phpstan.neon"
     },
     "extra": {
         "laravel": {
