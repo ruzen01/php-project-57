@@ -19,7 +19,7 @@ seed:
 validate:
 	composer validate
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 routes app
+	composer exec --verbose phpcs -- --standard=PSR12 app
 test:
 	php artisan test
 dev:
