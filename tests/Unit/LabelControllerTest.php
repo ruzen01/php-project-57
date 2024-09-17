@@ -14,142 +14,124 @@ class LabelControllerTest extends TestCase
     use RefreshDatabase;
 
     // Тест на получение списка меток
-    public function testIndexDisplaysLabels()
+    public function testIndexDisplaysLabels(): void
     {
         $this->withoutExceptionHandling();
 
-        // Создаем тестового пользователя и метку
+        /** @var User $user */
         $user = User::factory()->create();
+        /** @var Label $label */
         $label = Label::factory()->create();
 
-        // Аутентифицируем пользователя
         $this->actingAs($user);
 
-        // Запрашиваем страницу с метками
         $response = $this->get(route('labels.index'));
 
-        // Проверяем, что запрос успешен и данные меток отображаются
         $response->assertStatus(200);
         $response->assertViewIs('labels.index');
         $response->assertViewHas('labels');
     }
 
     // Тест на создание метки
-    public function testStoreCreatesNewLabel()
+    public function testStoreCreatesNewLabel(): void
     {
         $this->withoutExceptionHandling();
 
-        // Создаем тестового пользователя
+        /** @var User $user */
         $user = User::factory()->create();
-
-        // Аутентифицируем пользователя
         $this->actingAs($user);
 
-        // Создаем метку через POST запрос
         $response = $this->post(route('labels.store'), [
             'name' => 'Test Label',
-            'description' => 'This is a test label'
+            'description' => 'This is a test label',
         ]);
 
-        // Проверяем, что метка создана и произошел редирект
         $response->assertRedirect(route('labels.index'));
         $this->assertDatabaseHas('labels', ['name' => 'Test Label']);
     }
 
     // Тест на редактирование метки
-    public function testEditDisplaysEditForm()
+    public function testEditDisplaysEditForm(): void
     {
         $this->withoutExceptionHandling();
 
-        // Создаем тестового пользователя и метку
+        /** @var User $user */
         $user = User::factory()->create();
+        /** @var Label $label */
         $label = Label::factory()->create();
 
-        // Аутентифицируем пользователя
         $this->actingAs($user);
 
-        // Запрашиваем форму редактирования метки
         $response = $this->get(route('labels.edit', $label->id));
 
-        // Проверяем, что запрос успешен и форма редактирования отображается
         $response->assertStatus(200);
         $response->assertViewIs('labels.edit');
         $response->assertViewHas('label', $label);
     }
 
     // Тест на обновление метки
-    public function testUpdateModifiesExistingLabel()
+    public function testUpdateModifiesExistingLabel(): void
     {
         $this->withoutExceptionHandling();
 
-        // Создаем тестового пользователя и метку
+        /** @var User $user */
         $user = User::factory()->create();
+        /** @var Label $label */
         $label = Label::factory()->create();
 
-        // Аутентифицируем пользователя
         $this->actingAs($user);
 
-        // Обновляем метку через PUT запрос
         $response = $this->put(route('labels.update', $label->id), [
             'name' => 'Updated Label',
-            'description' => 'Updated description'
+            'description' => 'Updated description',
         ]);
 
-        // Проверяем, что метка обновлена и произошел редирект
         $response->assertRedirect(route('labels.index'));
         $this->assertDatabaseHas('labels', ['name' => 'Updated Label']);
     }
 
     // Тест на удаление метки
-    public function testDestroyDeletesLabel()
+    public function testDestroyDeletesLabel(): void
     {
         $this->withoutExceptionHandling();
 
-        // Создаем тестового пользователя и метку
+        /** @var User $user */
         $user = User::factory()->create();
+        /** @var Label $label */
         $label = Label::factory()->create();
 
-        // Аутентифицируем пользователя
         $this->actingAs($user);
 
-        // Удаляем метку через DELETE запрос
         $response = $this->delete(route('labels.destroy', $label->id));
 
-        // Проверяем, что метка удалена и произошел редирект
         $response->assertRedirect(route('labels.index'));
         $this->assertDatabaseMissing('labels', ['id' => $label->id]);
     }
 
     // Тест на удаление метки, связанной с задачами
-    public function testDestroyFailsIfLabelIsLinkedToTasks()
+    public function testDestroyFailsIfLabelIsLinkedToTasks(): void
     {
         $this->withoutExceptionHandling();
 
-        // Создаем тестового пользователя
+        /** @var User $user */
         $user = User::factory()->create();
-
-        // Создаем метку
+        /** @var Label $label */
         $label = Label::factory()->create();
-
-        // Создаем статус задачи
+        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
 
-        // Создаем задачу с привязкой к созданному пользователю и статусу
+        /** @var Task $task */
         $task = Task::factory()->create([
-            'created_by_id' => $user->id, // Указываем пользователя, который создал задачу
-            'status_id' => $taskStatus->id // Указываем статус задачи
+            'created_by_id' => $user->id,
+            'status_id' => $taskStatus->id,
         ]);
 
-        // Связываем задачу с меткой
         $task->labels()->attach($label);
 
-        // Аутентифицируем пользователя
         $this->actingAs($user);
 
-        // Пытаемся удалить метку через DELETE запрос
         $response = $this->delete(route('labels.destroy', $label->id));
 
-        // Проверяем, что метка не была удалена и произошел редирект с ошибкой
         $response->assertRedirect(route('labels.index'));
         $response->assertSessionHas('error', 'Не удалось удалить метку');
         $this->assertDatabaseHas('labels', ['id' => $label->id]);

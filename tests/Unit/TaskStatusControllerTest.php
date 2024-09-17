@@ -4,25 +4,22 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\TaskStatus;
-use App\Models\Task;
-use App\Models\User; // Подключаем модель пользователя для аутентификации
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TaskStatusControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    // Метод для аутентификации пользователя
-    protected function authenticate()
+    protected function authenticate(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
     }
 
-    // Тест для отображения списка всех статусов
-    public function testIndexDisplaysAllTaskStatuses()
+    public function testIndexDisplaysAllTaskStatuses(): void
     {
-        // Создаем несколько уникальных статусов задач
         TaskStatus::factory()->create(['name' => 'Status 1']);
         TaskStatus::factory()->create(['name' => 'Status 2']);
 
@@ -33,10 +30,9 @@ class TaskStatusControllerTest extends TestCase
         $response->assertSee('Status 2');
     }
 
-    // Тест для отображения формы создания нового статуса
-    public function testCreateDisplaysCreateForm()
+    public function testCreateDisplaysCreateForm(): void
     {
-        $this->authenticate(); // Аутентифицируем пользователя
+        $this->authenticate();
 
         $response = $this->get(route('task_statuses.create'));
 
@@ -44,25 +40,23 @@ class TaskStatusControllerTest extends TestCase
         $response->assertViewIs('task_statuses.create');
     }
 
-    // Тест для создания нового статуса
-    public function testStoreCreatesNewTaskStatus()
+    public function testStoreCreatesNewTaskStatus(): void
     {
-        $this->authenticate(); // Аутентифицируем пользователя
+        $this->authenticate();
 
         $data = [
-            'name' => 'Новый статус',
+            'name' => 'New Status',
         ];
 
         $response = $this->post(route('task_statuses.store'), $data);
 
         $response->assertRedirect(route('task_statuses.index'));
-        $this->assertDatabaseHas('task_statuses', ['name' => 'Новый статус']);
+        $this->assertDatabaseHas('task_statuses', ['name' => 'New Status']);
     }
 
-    // Тест для валидации на создание статуса
-    public function testStoreValidationFailsIfNameIsEmpty()
+    public function testStoreValidationFailsIfNameIsEmpty(): void
     {
-        $this->authenticate(); // Аутентифицируем пользователя
+        $this->authenticate();
 
         $data = [
             'name' => '',
@@ -74,11 +68,11 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseMissing('task_statuses', ['name' => '']);
     }
 
-    // Тест для отображения формы редактирования
-    public function testEditDisplaysEditForm()
+    public function testEditDisplaysEditForm(): void
     {
-        $this->authenticate(); // Аутентифицируем пользователя
+        $this->authenticate();
 
+        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
 
         $response = $this->get(route('task_statuses.edit', $taskStatus->id));
@@ -88,34 +82,31 @@ class TaskStatusControllerTest extends TestCase
         $response->assertViewHas('task_status', $taskStatus);
     }
 
-    // Тест для обновления статуса
-    public function testUpdateChangesExistingTaskStatus()
+    public function testUpdateChangesExistingTaskStatus(): void
     {
-        $this->authenticate(); // Аутентифицируем пользователя
+        $this->authenticate();
 
+        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
-        $data = [
-            'name' => 'Обновленный статус',
-        ];
 
-        $response = $this->put(route('task_statuses.update', $taskStatus->id), $data);
+        $response = $this->put(route('task_statuses.update', $taskStatus->id), [
+            'name' => 'Updated Status',
+        ]);
 
         $response->assertRedirect(route('task_statuses.index'));
-        $this->assertDatabaseHas('task_statuses', ['name' => 'Обновленный статус']);
+        $this->assertDatabaseHas('task_statuses', ['name' => 'Updated Status']);
     }
 
-    // Тест для удаления статуса
-    public function testDestroyDeletesTaskStatus()
+    public function testDestroyDeletesTaskStatus(): void
     {
-        $this->authenticate(); // Аутентифицируем пользователя
+        $this->authenticate();
 
+        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
 
         $response = $this->delete(route('task_statuses.destroy', $taskStatus->id));
 
         $response->assertRedirect(route('task_statuses.index'));
-
-        // Вместо assertDeleted используйте assertDatabaseMissing
         $this->assertDatabaseMissing('task_statuses', ['id' => $taskStatus->id]);
     }
 }
