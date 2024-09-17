@@ -38,8 +38,8 @@ jobs:
 
       - name: Debug Xdebug Status
         run: |
-        php -m
-        XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml -v
+          php -m
+          XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml -v
         
       - name: Check Xdebug installation
         run: php -m | grep xdebug
