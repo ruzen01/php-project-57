@@ -33,12 +33,20 @@ jobs:
       - name: Setup environment
         run: make setup
 
-      - name: Check Xdebug installation
-        run: php -m | grep xdebug
-        
-      - name: Run tests with phpdbg
-        run: phpdbg -qrr ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-      
+        # Setup PCOV
+        - name: Setup PCOV
+          run: |
+            sudo apt-get install php-pcov
+            phpenmod pcov
+
+        # Disable Xdebug if it's enabled
+        - name: Disable Xdebug
+          run: phpdismod xdebug
+
+        # Run tests with PCOV
+        - name: Run tests with PCOV
+          run: php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
       # Publish coverage to Code Climate (after running tests)
       - name: Code Climate Reporter (after-build)
         uses: paambaati/codeclimate-action@v5
