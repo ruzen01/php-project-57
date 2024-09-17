@@ -13,7 +13,7 @@ class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_index_displays_tasks()
+    public function testIndexDisplaysTasks()
     {
         $this->withoutExceptionHandling();
 
@@ -36,7 +36,7 @@ class TaskControllerTest extends TestCase
         $response->assertViewHas('tasks');
     }
 
-    public function test_store_creates_new_task()
+    public function testStoreCreatesNewTask()
     {
         $this->withoutExceptionHandling();
 
@@ -62,7 +62,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', ['name' => 'Test Task']);
     }
 
-    public function test_update_modifies_existing_task()
+    public function testUpdateModifiesExistingTask()
     {
         $this->withoutExceptionHandling();
 
@@ -85,7 +85,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', ['name' => 'Updated Task']);
     }
 
-    public function test_destroy_deletes_task()
+    public function testDestroyDeletesTask()
     {
         $this->withoutExceptionHandling();
 
@@ -105,7 +105,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
     }
 
-    public function test_show_displays_task_details()
+    public function testShowDisplaysTaskDetails()
     {
         $this->withoutExceptionHandling();
 

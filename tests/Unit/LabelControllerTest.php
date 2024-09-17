@@ -14,7 +14,7 @@ class LabelControllerTest extends TestCase
     use RefreshDatabase;
 
     // Тест на получение списка меток
-    public function test_index_displays_labels()
+    public function testIndexDisplaysLabels()
     {
         $this->withoutExceptionHandling();
 
@@ -35,7 +35,7 @@ class LabelControllerTest extends TestCase
     }
 
     // Тест на создание метки
-    public function test_store_creates_new_label()
+    public function testStoreCreatesNewLabel()
     {
         $this->withoutExceptionHandling();
 
@@ -57,7 +57,7 @@ class LabelControllerTest extends TestCase
     }
 
     // Тест на редактирование метки
-    public function test_edit_displays_edit_form()
+    public function testEditDisplaysEditForm()
     {
         $this->withoutExceptionHandling();
 
@@ -78,7 +78,7 @@ class LabelControllerTest extends TestCase
     }
 
     // Тест на обновление метки
-    public function test_update_modifies_existing_label()
+    public function testUpdateModifiesExistingLabel()
     {
         $this->withoutExceptionHandling();
 
@@ -101,7 +101,7 @@ class LabelControllerTest extends TestCase
     }
 
     // Тест на удаление метки
-    public function test_destroy_deletes_label()
+    public function testDestroyDeletesLabel()
     {
         $this->withoutExceptionHandling();
 
@@ -121,7 +121,7 @@ class LabelControllerTest extends TestCase
     }
 
     // Тест на удаление метки, связанной с задачами
-    public function test_destroy_fails_if_label_is_linked_to_tasks()
+    public function testDestroyFailsIfLabelIsLinkedToTasks()
     {
         $this->withoutExceptionHandling();
 

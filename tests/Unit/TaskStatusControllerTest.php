@@ -20,7 +20,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     // Тест для отображения списка всех статусов
-    public function test_index_displays_all_task_statuses()
+    public function testIndexDisplaysAllTaskStatuses()
     {
         // Создаем несколько уникальных статусов задач
         TaskStatus::factory()->create(['name' => 'Status 1']);
@@ -34,7 +34,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     // Тест для отображения формы создания нового статуса
-    public function test_create_displays_create_form()
+    public function testCreateDisplaysCreateForm()
     {
         $this->authenticate(); // Аутентифицируем пользователя
 
@@ -45,7 +45,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     // Тест для создания нового статуса
-    public function test_store_creates_new_task_status()
+    public function testStoreCreatesNewTaskStatus()
     {
         $this->authenticate(); // Аутентифицируем пользователя
 
@@ -60,7 +60,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     // Тест для валидации на создание статуса
-    public function test_store_validation_fails_if_name_is_empty()
+    public function testStoreValidationFailsIfNameIsEmpty()
     {
         $this->authenticate(); // Аутентифицируем пользователя
 
@@ -75,7 +75,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     // Тест для отображения формы редактирования
-    public function test_edit_displays_edit_form()
+    public function testEditDisplaysEditForm()
     {
         $this->authenticate(); // Аутентифицируем пользователя
 
@@ -89,7 +89,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     // Тест для обновления статуса
-    public function test_update_changes_existing_task_status()
+    public function testUpdateChangesExistingTaskStatus()
     {
         $this->authenticate(); // Аутентифицируем пользователя
 
@@ -105,7 +105,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     // Тест для удаления статуса
-    public function test_destroy_deletes_task_status()
+    public function testDestroyDeletesTaskStatus()
     {
         $this->authenticate(); // Аутентифицируем пользователя
 
