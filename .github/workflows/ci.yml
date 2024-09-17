@@ -38,7 +38,7 @@
                   run: |
                     sudo apt-get install php-pcov
                     sudo phpenmod pcov
-                    sudo systemctl restart php8.3-fpm
+                    sudo systemctl restart php8.2-fpm
 
                 # Disable Xdebug if it's enabled
                 - name: Disable Xdebug
