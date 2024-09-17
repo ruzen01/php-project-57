@@ -22,13 +22,15 @@ class TaskStatusControllerTest extends TestCase
     // Тест для отображения списка всех статусов
     public function test_index_displays_all_task_statuses()
     {
-        $this->authenticate(); // Аутентифицируем пользователя
-        TaskStatus::factory()->count(3)->create();
+        // Создаем несколько уникальных статусов задач
+        TaskStatus::factory()->create(['name' => 'Status 1']);
+        TaskStatus::factory()->create(['name' => 'Status 2']);
 
         $response = $this->get(route('task_statuses.index'));
 
         $response->assertStatus(200);
-        $response->assertViewHas('taskStatuses');
+        $response->assertSee('Status 1');
+        $response->assertSee('Status 2');
     }
 
     // Тест для отображения формы создания нового статуса
