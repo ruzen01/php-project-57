@@ -12,9 +12,21 @@
     </testsuites>
 
     <coverage>
-        <include>
-            <directory suffix=".php">./app</directory>
-        </include>
+        <filter>
+            <include>
+                <directory suffix=".php">./app</directory>
+            </include>
+            <!-- Если нужно исключить какие-то файлы или директории -->
+            <!--
+            <exclude>
+                <directory>./app/Exceptions</directory>
+            </exclude>
+            -->
+        </filter>
+        <report>
+            <clover outputFile="build/logs/clover.xml"/>
+            <!-- Другие форматы отчетов, если необходимо -->
+        </report>
     </coverage>
 
     <php>
