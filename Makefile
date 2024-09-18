@@ -28,4 +28,4 @@ build:
 	npm run build
 test-coverage:
 	mkdir -p build/logs
-	XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml || (echo "Coverage failed, report not generated"; exit 1)
+	XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
