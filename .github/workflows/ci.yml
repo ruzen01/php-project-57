@@ -1,48 +1,50 @@
-                    # Название рабочего процесса
-                    name: CI
-                    # Запускать рабочий процесс при push или pull request
-                    on:
-                      push:
-                      pull_request:
-                    jobs:
-                      build:
-                        runs-on: ubuntu-latest
-                        steps:
-                          # Клонирование репозитория
-                          - uses: actions/checkout@v3
+# Название рабочего процесса
+name: CI
 
-                          # Установка PHP и Xdebug
-                          - name: Setup PHP
-                            uses: shivammathur/setup-php@v2
-                            with:
-                              php-version: '8.2'
-                              extensions: xdebug
-                              ini-values: |
-                                xdebug.mode = coverage
-                                xdebug.start_with_request = yes
+# Запускать рабочий процесс при push или pull request
+on:
+  push:
+  pull_request:
 
-                          # Установка зависимостей
-                          - name: Install
-                            run: make install
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Клонирование репозитория
+      - uses: actions/checkout@v3
 
-                          # Запуск линтера
-                          - name: Run linter
-                            run: make lint
+      # Установка PHP и Xdebug
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: xdebug
+          ini-values: |
+            xdebug.mode = coverage
+            xdebug.start_with_request = yes
 
-                          # Настройка окружения
-                          - name: Setup environment
-                            run: make setup
+      # Установка зависимостей
+      - name: Install
+        run: make install
 
-                          # Запуск тестов с Xdebug
-                          - name: Run tests with Xdebug
-                            run: php ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+      # Запуск линтера
+      - name: Run linter
+        run: make lint
 
-                          # Публикация покрытия в Code Climate
-                          - name: Code Climate Reporter (after-build)
-                            uses: paambaati/codeclimate-action@v5
-                            with:
-                              coverageCommand: make test-coverage
-                              coverageLocations: build/logs/clover.xml:clover
-                              debug: true
-                            env:
-                              CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      # Настройка окружения
+      - name: Setup environment
+        run: make setup
+
+      # Запуск тестов с Xdebug
+      - name: Run tests with Xdebug
+        run: php ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+      # Публикация покрытия в Code Climate
+      - name: Code Climate Reporter (after-build)
+        uses: paambaati/codeclimate-action@v5
+        with:
+          coverageCommand: make test-coverage
+          coverageLocations: build/logs/clover.xml:clover
+          debug: true
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
