@@ -29,9 +29,9 @@ class LabelController extends Controller
             'name.max' => 'Имя метки не должно превышать 255 символов.', // Новое сообщение об ошибке
             'name.unique' => 'Метка с таким именем уже существует.',
         ]);
-    
+
         Label::create($request->only('name', 'description'));
-    
+
         return redirect()->route('labels.index')->with('success', 'Метка успешно создана');
     }
 
@@ -55,9 +55,9 @@ class LabelController extends Controller
             'name.max' => 'Имя метки не должно превышать 255 символов.', // Новое сообщение об ошибке
             'name.unique' => 'Метка с таким именем уже существует.',
         ]);
-    
+
         $label->update($request->only('name', 'description'));
-    
+
         return redirect()->route('labels.index')->with('success', 'Метка успешно изменена');
     }
 

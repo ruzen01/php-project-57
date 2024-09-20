@@ -61,18 +61,18 @@ class TaskController extends Controller
             'assigned_to_id.exists' => 'Выбранный исполнитель недействителен.',
             'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
-    
+
         // Добавляем ID авторизованного пользователя
         $validated['created_by_id'] = auth()->id();
-    
+
         // Создание задачи
         $task = Task::create($validated);
-    
+
         // Привязка меток к задаче, если они переданы
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
-    
+
         return redirect()->route('tasks.index')->with('success', 'Задача успешно создана');
     }
 
@@ -98,13 +98,13 @@ class TaskController extends Controller
             'name.max' => 'Имя задачи не должно превышать 255 символов.', // Сообщение об ошибке для слишком длинного имени
             'description.max' => 'Описание не должно превышать 1000 символов.', // Сообщение об ошибке для слишком длинного описания
         ]);
-    
+
         $task->update($validatedData);
-    
+
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
-    
+
         return redirect()->route('tasks.index')->with('success', 'Задача успешно изменена.');
     }
 

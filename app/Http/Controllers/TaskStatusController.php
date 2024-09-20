@@ -27,14 +27,14 @@ class TaskStatusController extends Controller
         $validated = $request->validate([
             'name' => 'required|min:1|max:255|unique:task_statuses', // Добавлено ограничение max:255
         ], [
-            'name.required' => 'Это обязательное поле', 
+            'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
             'name.max' => 'Имя статуса не должно превышать 255 символов.', // Новое сообщение об ошибке
             'name.unique' => 'Статус с таким именем уже существует.',
         ]);
-    
+
         TaskStatus::create($validated);
-    
+
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно создан');
     }
 
@@ -55,9 +55,9 @@ class TaskStatusController extends Controller
             'name.max' => 'Имя статуса не должно превышать 255 символов.', // Новое сообщение об ошибке
             'name.unique' => 'Статус с таким именем уже существует.',
         ]);
-    
+
         $task_status->update($validated);
-    
+
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно изменён');
     }
 
