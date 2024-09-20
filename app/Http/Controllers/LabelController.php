@@ -59,9 +59,9 @@ class LabelController extends Controller
             'name.unique' => 'Метка с таким именем уже существует.',
             'description.max' => 'Описание не должно превышать 1000 символов.',
         ]);
-    
+
         $label->update($validated);
-    
+
         return redirect()->route('labels.index')->with('success', 'Метка успешно изменена');
     }
 
