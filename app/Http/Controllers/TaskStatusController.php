@@ -48,7 +48,7 @@ class TaskStatusController extends Controller
     public function update(Request $request, TaskStatus $task_status)
     {
         $validated = $request->validate([
-            'name' => 'required|min:1|max:255|unique:task_statuses,name,' . $task_status->id, // Добавлено ограничение max:255
+            'name' => 'required|min:1|max:255|unique:task_statuses,name,' . $task_status->id, // max:255
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
