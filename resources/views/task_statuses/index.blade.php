@@ -19,7 +19,7 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">ID</th>
-                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Имя</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase truncate">Имя</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Дата создания</th>
                     @auth
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Действия</th>
@@ -30,7 +30,7 @@
                 @foreach ($taskStatuses as $status)
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $status->id }}</td>
-                    <td class="px-4 py-2 text-sm text-gray-900">{{ $status->name }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900 truncate" title="{{ $status->name }}">{{ $status->name }}</td>
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $status->created_at->format('d.m.Y') }}</td>
                     @auth
                     <td class="px-4 py-2 text-sm text-gray-900">
