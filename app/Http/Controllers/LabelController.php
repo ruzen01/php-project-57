@@ -22,15 +22,16 @@ class LabelController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|min:1|unique:labels,name',
+            'name' => 'required|min:1|max:255|unique:labels,name', // Добавлено ограничение max:255
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя метки должно содержать хотя бы один символ.',
+            'name.max' => 'Имя метки не должно превышать 255 символов.', // Новое сообщение об ошибке
             'name.unique' => 'Метка с таким именем уже существует.',
         ]);
-
+    
         Label::create($request->only('name', 'description'));
-
+    
         return redirect()->route('labels.index')->with('success', 'Метка успешно создана');
     }
 
@@ -45,16 +46,18 @@ class LabelController extends Controller
             'name' => [
                 'required',
                 'min:1',
+                'max:255', // Добавлено ограничение max:255
                 Rule::unique('labels', 'name')->ignore($label->id),
             ],
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя метки должно содержать хотя бы один символ.',
+            'name.max' => 'Имя метки не должно превышать 255 символов.', // Новое сообщение об ошибке
             'name.unique' => 'Метка с таким именем уже существует.',
         ]);
-
+    
         $label->update($request->only('name', 'description'));
-
+    
         return redirect()->route('labels.index')->with('success', 'Метка успешно изменена');
     }
 

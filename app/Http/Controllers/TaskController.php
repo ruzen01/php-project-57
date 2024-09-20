@@ -42,10 +42,10 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        // Валидация данных с пользовательскими сообщениями
+        // Валидация данных с ограничением на длину имени и описания
         $validated = $request->validate([
-            'name' => 'required|min:1|unique:tasks,name', // уникальность имени задачи
-            'description' => 'nullable|string',
+            'name' => 'required|min:1|max:255|unique:tasks,name', // Добавлено ограничение max:255
+            'description' => 'nullable|string|max:1000', // Добавлено ограничение max:1000
             'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
@@ -53,24 +53,26 @@ class TaskController extends Controller
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя задачи должно содержать хотя бы один символ.',
+            'name.max' => 'Имя задачи не должно превышать 255 символов.', // Новое сообщение об ошибке
             'name.unique' => 'Задача с таким именем уже существует.',
+            'description.max' => 'Описание не должно превышать 1000 символов.', // Новое сообщение об ошибке
             'status_id.required' => 'Выберите статус задачи.',
             'status_id.exists' => 'Выбранный статус недействителен.',
             'assigned_to_id.exists' => 'Выбранный исполнитель недействителен.',
             'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
-
+    
         // Добавляем ID авторизованного пользователя
         $validated['created_by_id'] = auth()->id();
-
+    
         // Создание задачи
         $task = Task::create($validated);
-
+    
         // Привязка меток к задаче, если они переданы
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
-
+    
         return redirect()->route('tasks.index')->with('success', 'Задача успешно создана');
     }
 
@@ -86,19 +88,23 @@ class TaskController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:1000', // Добавлено ограничение max:1000
             'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.max' => 'Имя задачи не должно превышать 255 символов.', // Сообщение об ошибке для слишком длинного имени
+            'description.max' => 'Описание не должно превышать 1000 символов.', // Сообщение об ошибке для слишком длинного описания
         ]);
-
+    
         $task->update($validatedData);
-
+    
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
-
+    
         return redirect()->route('tasks.index')->with('success', 'Задача успешно изменена.');
     }
 

@@ -23,19 +23,18 @@ class TaskStatusController extends Controller
     // Сохранение нового статуса в базе данных
     public function store(Request $request)
     {
-        // Полная валидация с кастомными сообщениями
+        // Полная валидация с ограничением на длину имени
         $validated = $request->validate([
-            'name' => 'required|min:1|unique:task_statuses',
+            'name' => 'required|min:1|max:255|unique:task_statuses', // Добавлено ограничение max:255
         ], [
-            'name.required' => 'Это обязательное поле', // Кастомное сообщение для пустого поля
-            'name.min' => 'Имя статуса должно содержать хотя бы один символ.', // Кастомное сообщение для min
-            'name.unique' => 'Статус с таким именем уже существует.', // Кастомное сообщение для уникальности
+            'name.required' => 'Это обязательное поле', 
+            'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
+            'name.max' => 'Имя статуса не должно превышать 255 символов.', // Новое сообщение об ошибке
+            'name.unique' => 'Статус с таким именем уже существует.',
         ]);
-
-        // Создание нового статуса
+    
         TaskStatus::create($validated);
-
-        // Сообщение об успешном создании статуса
+    
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно создан');
     }
 
@@ -49,11 +48,16 @@ class TaskStatusController extends Controller
     public function update(Request $request, TaskStatus $task_status)
     {
         $validated = $request->validate([
-            'name' => 'required|min:1|unique:task_statuses,name,' . $task_status->id,
+            'name' => 'required|min:1|max:255|unique:task_statuses,name,' . $task_status->id, // Добавлено ограничение max:255
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
+            'name.max' => 'Имя статуса не должно превышать 255 символов.', // Новое сообщение об ошибке
+            'name.unique' => 'Статус с таким именем уже существует.',
         ]);
-
+    
         $task_status->update($validated);
-
+    
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно изменён');
     }
 
