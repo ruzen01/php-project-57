@@ -4,6 +4,18 @@
 <div class="container mx-auto px-4">
     <h1 class="text-2xl font-bold mb-6">Метки</h1>
 
+    <!-- Флеш-сообщения -->
+    <!-- @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            {{ session('error') }}
+        </div>
+    @endif -->
+
     <!-- Кнопка создания метки -->
     @auth
     <div class="mb-4 text-right">
@@ -19,7 +31,7 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">ID</th>
-                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase truncate">Имя</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Имя</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Описание</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Дата создания</th>
                     @auth
@@ -31,8 +43,8 @@
                 @foreach ($labels as $label)
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $label->id }}</td>
-                    <td class="px-4 py-2 text-sm text-gray-900 truncate" title="{{ $label->name }}">{{ $label->name }}</td>
-                    <td class="px-4 py-2 text-sm text-gray-900 truncate" title="{{ $label->description ?? 'Описание отсутствует' }}">{{ $label->description ?? 'Описание отсутствует' }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ $label->name }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ $label->description ?? 'Описание отсутствует' }}</td>
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $label->created_at->format('d.m.Y') }}</td>
                     @auth
                     <td class="px-4 py-2 text-sm text-gray-900">
