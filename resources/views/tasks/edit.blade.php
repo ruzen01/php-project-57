@@ -23,11 +23,17 @@
         <div class="form-group mb-4">
             <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Имя</label>
             <input type="text" name="name" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ $task->name }}" required>
+            @error('name')
+                <div class="text-red-500 text-sm">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="form-group mb-4">
             <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Описание</label>
             <textarea name="description" id="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ $task->description }}</textarea>
+            @error('description')
+                <div class="text-red-500 text-sm">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="form-group mb-4">

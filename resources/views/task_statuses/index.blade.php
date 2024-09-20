@@ -14,7 +14,7 @@
     @endauth
 
     <!-- Таблица статусов -->
-    <div class="overflow-hidden rounded-lg shadow-md">
+    <div class="overflow-x-auto overflow-y-auto max-h-96">
         <table class="min-w-full divide-y divide-gray-200 bg-white w-full">
             <thead class="bg-gray-50">
                 <tr>
@@ -30,7 +30,7 @@
                 @foreach ($taskStatuses as $status)
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $status->id }}</td>
-                    <td class="px-4 py-2 text-sm text-gray-900">{{ $status->name }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900 truncate max-w-xs">{{ $status->name }}</td>
                     <td class="px-4 py-2 text-sm text-gray-900">{{ $status->created_at->format('d.m.Y') }}</td>
                     @auth
                     <td class="px-4 py-2 text-sm text-gray-900">
