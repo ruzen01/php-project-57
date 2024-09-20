@@ -50,18 +50,18 @@ class LabelController extends Controller
                 'min:1',
                 'max:255', // Добавлено ограничение max:255
                 Rule::unique('labels', 'name')->ignore($label->id),
-                'description' => 'nullable|string|max:1000',
             ],
+            'description' => 'nullable|string|max:1000', // Описание вынесено в общий массив
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя метки должно содержать хотя бы один символ.',
-            'name.max' => 'Имя метки не должно превышать 255 символов.', // Новое сообщение об ошибке
+            'name.max' => 'Имя метки не должно превышать 255 символов.',
             'name.unique' => 'Метка с таким именем уже существует.',
             'description.max' => 'Описание не должно превышать 1000 символов.',
         ]);
-
-        $label->update($request->only('name', 'description'));
-
+    
+        $label->update($validated);
+    
         return redirect()->route('labels.index')->with('success', 'Метка успешно изменена');
     }
 
