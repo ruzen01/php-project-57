@@ -4,16 +4,6 @@
         <!-- Логотип -->
         <a class="text-xl font-bold text-gray-800 dark:text-white" href="{{ url('/') }}">Менеджер задач</a>
 
-        <!-- Кнопка для открытия меню на мобильных устройствах -->
-        <div class="lg:hidden">
-            <button id="mobile-menu-button" class="text-gray-800 dark:text-white focus:outline-none">
-                <!-- Иконка меню -->
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-
         <!-- Основное меню (центрирование кнопок) -->
         <div id="navbarNav" class="hidden lg:flex lg:items-center lg:space-x-4 mx-auto">
             <!-- Навигационные ссылки -->
@@ -52,29 +42,4 @@
             @endguest
         </div>
     </div>
-
-    <!-- Мобильное меню -->
-    <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-gray-800">
-        <ul class="flex flex-col space-y-4 py-4 text-gray-800 dark:text-white">
-            <li>
-                <a class="hover:text-blue-500" href="{{ route('tasks.index') }}">Задачи</a>
-            </li>
-            <li>
-                <a class="hover:text-blue-500" href="{{ route('task_statuses.index') }}">Статусы</a>
-            </li>
-            <li>
-                <a class="hover:text-blue-500" href="{{ route('labels.index') }}">Метки</a>
-            </li>
-        </ul>
-    </div>
 </nav>
-
-<!-- Скрипт для управления мобильным меню -->
-<script>
-    const menuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    menuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-</script>
