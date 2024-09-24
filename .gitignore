@@ -18,3 +18,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+localhost-key.pem
+localhost.pem
+.php-cs-fixer.cache
+*.log
+*.tmp
