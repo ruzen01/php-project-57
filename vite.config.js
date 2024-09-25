@@ -1,5 +1,7 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 export default defineConfig({
     plugins: [
@@ -8,7 +10,15 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-       server: {
-           https: true,
-       },
+    css: {
+        postcss: {
+            plugins: [
+                tailwindcss({ config: "./config/tailwind.config.js" }), // Указываем путь к файлу конфигурации Tailwind
+                autoprefixer(),
+            ],
+        },
+    },
+    server: {
+        https: true,
+    },
 });
