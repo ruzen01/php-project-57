@@ -11,10 +11,12 @@ class TaskStatus extends Model
     use HasFactory;
 
     protected $table = 'task_statuses';
+    protected $primaryKey = 'id';  // Явное указание первичного ключа
+    public $incrementing = true;
+    protected $keyType = 'int';
 
-    // Разрешаем массовое присвоение для поля 'name'
     protected $fillable = ['name'];
-    // Определяем связь один ко многим с моделью Task
+
     public function tasks()
     {
         return $this->hasMany(Task::class, 'status_id');

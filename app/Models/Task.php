@@ -11,6 +11,9 @@ class Task extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';  // Указываем явно первичный ключ
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = ['name', 'description', 'status_id', 'created_by_id', 'assigned_to_id'];
 

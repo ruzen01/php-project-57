@@ -11,6 +11,8 @@ class Label extends Model
 
     protected $fillable = ['name', 'description'];
 
+    protected $primaryKey = 'id';  // Явно указываем первичный ключ
+
     public function tasks()
     {
         return $this->belongsToMany(Task::class);
