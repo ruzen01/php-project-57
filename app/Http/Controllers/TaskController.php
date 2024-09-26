@@ -14,12 +14,11 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        // Пагинация задач по 15 элементов
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
-                AllowedFilter::exact('statusId'),
-                AllowedFilter::exact('createdById'),
-                AllowedFilter::exact('assignedToId'),
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id'),
                 AllowedFilter::scope('label'),
             ])
             ->with(['labels', 'status', 'creator', 'assignee'])
@@ -45,8 +44,8 @@ class TaskController extends Controller
         $validated = $request->validate([
             'name' => 'required|min:1|max:255|unique:tasks,name',
             'description' => 'nullable|string|max:1000',
-            'statusId' => 'required|exists:task_statuses,id',
-            'assignedToId' => 'nullable|exists:users,id',
+            'status_id' => 'required|exists:task_statuses,id',
+            'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
         ], [
@@ -55,13 +54,13 @@ class TaskController extends Controller
             'name.max' => 'Имя задачи не должно превышать 255 символов.',
             'name.unique' => 'Задача с таким именем уже существует.',
             'description.max' => 'Описание не должно превышать 1000 символов.',
-            'statusId.required' => 'Выберите статус задачи.',
-            'statusId.exists' => 'Выбранный статус недействителен.',
-            'assignedToId.exists' => 'Выбранный исполнитель недействителен.',
+            'status_id.required' => 'Выберите статус задачи.',
+            'status_id.exists' => 'Выбранный статус недействителен.',
+            'assigned_to_id.exists' => 'Выбранный исполнитель недействителен.',
             'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
 
-        $validated['createdById'] = auth()->id();
+        $validated['created_by_id'] = auth()->id();
 
         $task = Task::create($validated);
 
@@ -85,8 +84,8 @@ class TaskController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'statusId' => 'required|exists:task_statuses,id',
-            'assignedToId' => 'nullable|exists:users,id',
+            'status_id' => 'required|exists:task_statuses,id',
+            'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
         ], [
@@ -106,16 +105,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        $authenticatedUser = auth()->user();
-
-        if ($authenticatedUser !== null) {
-            $createdById = $authenticatedUser->id;
-        } else {
-            return redirect()->route('login')->with('error', 'You must be logged in to perform this action.');
-        }
-
         $task->delete();
-
         return redirect()->route('tasks.index')->with('success', 'Задача успешно удалена');
     }
 

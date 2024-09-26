@@ -79,7 +79,7 @@ class TaskStatusControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('task_statuses.edit');
-        $response->assertViewHas('task_status', $taskStatus);
+        $response->assertViewHas('taskStatus', $taskStatus);
     }
 
     public function testUpdateChangesExistingTaskStatus(): void

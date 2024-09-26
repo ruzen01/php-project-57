@@ -17,13 +17,9 @@ class TaskControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        /** @var User $user */
         $user = User::factory()->create();
-        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
-        /** @var Task $task */
         $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $taskStatus->id]);
-        /** @var Label $label */
         $label = Label::factory()->create();
         $task->labels()->attach($label);
 
@@ -40,11 +36,8 @@ class TaskControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        /** @var User $user */
         $user = User::factory()->create();
-        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
-        /** @var Label $label */
         $label = Label::factory()->create();
 
         $this->actingAs($user);
@@ -65,11 +58,8 @@ class TaskControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        /** @var User $user */
         $user = User::factory()->create();
-        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
-        /** @var Task $task */
         $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $taskStatus->id]);
 
         $this->actingAs($user);
@@ -87,11 +77,8 @@ class TaskControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        /** @var User $user */
         $user = User::factory()->create();
-        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
-        /** @var Task $task */
         $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $taskStatus->id]);
 
         $this->actingAs($user);
@@ -106,11 +93,8 @@ class TaskControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        /** @var User $user */
         $user = User::factory()->create();
-        /** @var TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
-        /** @var Task $task */
         $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $taskStatus->id]);
 
         $this->actingAs($user);
