@@ -10,7 +10,8 @@ class LabelController extends Controller
 {
     public function index()
     {
-        $labels = Label::all();
+        // Пагинация по 15 элементов
+        $labels = Label::paginate(15);
         return view('labels.index', compact('labels'));
     }
 
@@ -22,12 +23,12 @@ class LabelController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|min:1|max:255|unique:labels,name', // Добавлено ограничение max:255
-            'description' => 'nullable|string|max:1000', // Добавлено ограничение max:1000
+            'name' => 'required|min:1|max:255|unique:labels,name',
+            'description' => 'nullable|string|max:1000',
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя метки должно содержать хотя бы один символ.',
-            'name.max' => 'Имя метки не должно превышать 255 символов.', // Новое сообщение об ошибке
+            'name.max' => 'Имя метки не должно превышать 255 символов.',
             'name.unique' => 'Метка с таким именем уже существует.',
             'description.max' => 'Описание не должно превышать 1000 символов.',
         ]);
@@ -48,10 +49,10 @@ class LabelController extends Controller
             'name' => [
                 'required',
                 'min:1',
-                'max:255', // Добавлено ограничение max:255
+                'max:255',
                 Rule::unique('labels', 'name')->ignore($label->id),
             ],
-            'description' => 'nullable|string|max:1000', // Описание вынесено в общий массив
+            'description' => 'nullable|string|max:1000',
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя метки должно содержать хотя бы один символ.',

@@ -7,29 +7,26 @@ use App\Models\TaskStatus;
 
 class TaskStatusController extends Controller
 {
-    // Отображение списка всех статусов
     public function index()
     {
-        $taskStatuses = TaskStatus::all();
+        // Пагинация по 15 статусов
+        $taskStatuses = TaskStatus::paginate(15);
         return view('task_statuses.index', compact('taskStatuses'));
     }
 
-    // Показ формы для создания нового статуса
     public function create()
     {
         return view('task_statuses.create');
     }
 
-    // Сохранение нового статуса в базе данных
     public function store(Request $request)
     {
-        // Полная валидация с ограничением на длину имени
         $validated = $request->validate([
-            'name' => 'required|min:1|max:255|unique:task_statuses', // Добавлено ограничение max:255
+            'name' => 'required|min:1|max:255|unique:task_statuses',
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
-            'name.max' => 'Имя статуса не должно превышать 255 символов.', // Новое сообщение об ошибке
+            'name.max' => 'Имя статуса не должно превышать 255 символов.',
             'name.unique' => 'Статус с таким именем уже существует.',
         ]);
 
@@ -38,39 +35,34 @@ class TaskStatusController extends Controller
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно создан');
     }
 
-    // Показ формы для редактирования существующего статуса
-    public function edit(TaskStatus $task_status)
+    public function edit(TaskStatus $taskStatus)
     {
-        return view('task_statuses.edit', compact('task_status'));
+        return view('task_statuses.edit', compact('taskStatus'));
     }
 
-    // Обновление существующего статуса в базе данных
-    public function update(Request $request, TaskStatus $task_status)
+    public function update(Request $request, TaskStatus $taskStatus)
     {
         $validated = $request->validate([
-            'name' => 'required|min:1|max:255|unique:task_statuses,name,' . $task_status->id, // max:255
+            'name' => 'required|min:1|max:255|unique:task_statuses,name,' . $taskStatus->id,
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
-            'name.max' => 'Имя статуса не должно превышать 255 символов.', // Новое сообщение об ошибке
+            'name.max' => 'Имя статуса не должно превышать 255 символов.',
             'name.unique' => 'Статус с таким именем уже существует.',
         ]);
 
-        $task_status->update($validated);
+        $taskStatus->update($validated);
 
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно изменён');
     }
 
-    // Удаление статуса
-    public function destroy(TaskStatus $task_status)
+    public function destroy(TaskStatus $taskStatus)
     {
-        if ($task_status->tasks()->count() > 0) {
-            return redirect()
-                ->route('task_statuses.index')
-                ->with('error', 'Невозможно удалить статус, связанный с задачей');
+        if ($taskStatus->tasks()->count() > 0) {
+            return redirect()->route('task_statuses.index')->with('error', 'Невозможно удалить статус, связанный с задачей');
         }
 
-        $task_status->delete();
+        $taskStatus->delete();
 
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно удалён');
     }

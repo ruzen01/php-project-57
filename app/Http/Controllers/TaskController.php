@@ -14,61 +14,57 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        // Загружаем задачи вместе с привязанными метками
+        // Пагинация задач по 15 элементов
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
-                AllowedFilter::exact('status_id'),
-                AllowedFilter::exact('created_by_id'),
-                AllowedFilter::exact('assigned_to_id'),
-                AllowedFilter::scope('label') // Фильтр по меткам
+                AllowedFilter::exact('statusId'),
+                AllowedFilter::exact('createdById'),
+                AllowedFilter::exact('assignedToId'),
+                AllowedFilter::scope('label'),
             ])
-            ->with(['labels', 'status', 'creator', 'assignee']) // Заменяем 'executor' на 'assignee'
-            ->get();
+            ->with(['labels', 'status', 'creator', 'assignee'])
+            ->paginate(15);
 
-        $task_statuses = TaskStatus::pluck('name', 'id');
+        $taskStatuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
 
-        return view('tasks.index', compact('tasks', 'task_statuses', 'users', 'labels'));
+        return view('tasks.index', compact('tasks', 'taskStatuses', 'users', 'labels'));
     }
 
     public function create()
     {
-        $task_statuses = TaskStatus::all();
+        $taskStatuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
-        return view('tasks.create', compact('task_statuses', 'users', 'labels'));
+        return view('tasks.create', compact('taskStatuses', 'users', 'labels'));
     }
 
     public function store(Request $request)
     {
-        // Валидация данных с ограничением на длину имени и описания
         $validated = $request->validate([
-            'name' => 'required|min:1|max:255|unique:tasks,name', // Добавлено ограничение max:255
-            'description' => 'nullable|string|max:1000', // Добавлено ограничение max:1000
-            'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id',
+            'name' => 'required|min:1|max:255|unique:tasks,name',
+            'description' => 'nullable|string|max:1000',
+            'statusId' => 'required|exists:task_statuses,id',
+            'assignedToId' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
         ], [
             'name.required' => 'Это обязательное поле',
             'name.min' => 'Имя задачи должно содержать хотя бы один символ.',
-            'name.max' => 'Имя задачи не должно превышать 255 символов.', // Новое сообщение об ошибке
+            'name.max' => 'Имя задачи не должно превышать 255 символов.',
             'name.unique' => 'Задача с таким именем уже существует.',
-            'description.max' => 'Описание не должно превышать 1000 символов.', // Новое сообщение об ошибке
-            'status_id.required' => 'Выберите статус задачи.',
-            'status_id.exists' => 'Выбранный статус недействителен.',
-            'assigned_to_id.exists' => 'Выбранный исполнитель недействителен.',
+            'description.max' => 'Описание не должно превышать 1000 символов.',
+            'statusId.required' => 'Выберите статус задачи.',
+            'statusId.exists' => 'Выбранный статус недействителен.',
+            'assignedToId.exists' => 'Выбранный исполнитель недействителен.',
             'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
 
-        // Добавляем ID авторизованного пользователя
-        $validated['created_by_id'] = auth()->id();
+        $validated['createdById'] = auth()->id();
 
-        // Создание задачи
         $task = Task::create($validated);
 
-        // Привязка меток к задаче, если они переданы
         if ($request->has('labels')) {
             $task->labels()->sync($request->labels);
         }
@@ -78,19 +74,19 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $task_statuses = TaskStatus::all();
+        $taskStatuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
-        return view('tasks.edit', compact('task', 'task_statuses', 'users', 'labels'));
+        return view('tasks.edit', compact('task', 'taskStatuses', 'users', 'labels'));
     }
 
     public function update(Request $request, Task $task)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000', // Добавлено ограничение max:1000
-            'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id',
+            'description' => 'nullable|string|max:1000',
+            'statusId' => 'required|exists:task_statuses,id',
+            'assignedToId' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
         ], [
@@ -110,18 +106,14 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        // Получаем аутентифицированного пользователя
         $authenticatedUser = auth()->user();
 
-        // Проверяем, что пользователь аутентифицирован (не null)
         if ($authenticatedUser !== null) {
-            $created_by_id = $authenticatedUser->id;
+            $createdById = $authenticatedUser->id;
         } else {
-            // В случае если пользователь не аутентифицирован, можно вернуть ошибку или редирект
             return redirect()->route('login')->with('error', 'You must be logged in to perform this action.');
         }
 
-        // Удаляем задачу
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Задача успешно удалена');
@@ -129,7 +121,7 @@ class TaskController extends Controller
 
     public function show(int $id)
     {
-        $task = Task::with('labels')->findOrFail($id); // Подгружаем связанные метки
+        $task = Task::with('labels')->findOrFail($id);
         return view('tasks.show', compact('task'));
     }
 }
