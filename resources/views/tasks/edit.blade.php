@@ -39,7 +39,7 @@
         <div class="form-group mb-4">
             <label for="status_id" class="block text-gray-700 text-sm font-bold mb-2">Статус</label>
             <select name="status_id" id="status_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                @foreach ($task_statuses as $status)
+                @foreach ($taskStatuses as $status)
                     <option value="{{ $status->id }}" @if($task->status_id == $status->id) selected @endif>
                         {{ $status->name }}
                     </option>

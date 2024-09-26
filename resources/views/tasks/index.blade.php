@@ -11,7 +11,7 @@
                 <label for="status_id" class="block text-gray-700 text-sm font-medium mb-1"></label>
                 <select name="filter[status_id]" id="status_id" class="block w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Статус</option>
-                    @foreach($task_statuses as $id => $name)
+                    @foreach($taskStatuses as $id => $name)
                     <option value="{{ $id }}" {{ request('filter.status_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
                     @endforeach
                 </select>
@@ -46,7 +46,7 @@
     </form>
 
     <!-- Таблица задач с горизонтальной и вертикальной прокруткой -->
-    <div class="overflow-x-auto overflow-y-auto max-h-96">
+    <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 bg-white table-fixed">
             <thead class="bg-gray-50">
                 <tr>

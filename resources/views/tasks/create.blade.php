@@ -38,7 +38,7 @@
             <label for="status_id" class="block text-gray-700 text-sm font-bold mb-2">Статус</label>
             <select name="status_id" id="status_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="" {{ old('status_id') == '' ? 'selected' : '' }}>Выберите статус</option>
-                @foreach ($task_statuses as $status)
+                @foreach ($taskStatuses as $status)
                     <option value="{{ $status->id }}" {{ old('status_id') == $status->id ? 'selected' : '' }}>
                         {{ $status->name }}
                     </option>

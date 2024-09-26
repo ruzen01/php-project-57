@@ -14,7 +14,7 @@
     @endauth
 
     <!-- Таблица меток -->
-    <div class="overflow-x-auto overflow-y-auto max-h-96">
+    <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 bg-white w-full">
             <thead class="bg-gray-50">
                 <tr>
