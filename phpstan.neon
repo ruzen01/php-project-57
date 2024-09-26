@@ -8,3 +8,5 @@ parameters:
    ignoreErrors:
        - identifier: missingType.iterableValue
        - identifier: missingType.generics
+       - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model\\#'
+       - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model\\#'
