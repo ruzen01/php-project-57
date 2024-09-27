@@ -24,7 +24,12 @@ class TaskStatusController extends Controller
         $this->authorize('create', TaskStatus::class);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:task_statuses',
+            'name' => 'required|min:1|max:255|unique:task_statuses',
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
+            'name.max' => 'Имя статуса не должно превышать 255 символов.',
+            'name.unique' => 'Статус с таким именем уже существует.',
         ]);
 
         TaskStatus::create($validated);
@@ -43,7 +48,12 @@ class TaskStatusController extends Controller
         $this->authorize('update', $taskStatus);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:task_statuses,name,' . $taskStatus->id,
+            'name' => 'required|min:1|max:255|unique:task_statuses,name,' . $taskStatus->id,
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя статуса должно содержать хотя бы один символ.',
+            'name.max' => 'Имя статуса не должно превышать 255 символов.',
+            'name.unique' => 'Статус с таким именем уже существует.',
         ]);
 
         $taskStatus->update($validated);
@@ -54,6 +64,11 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         $this->authorize('delete', $taskStatus);
+
+        if ($taskStatus->tasks()->count() > 0) {
+            return redirect()->route('task_statuses.index')
+            ->with('error', 'Невозможно удалить статус, связанный с задачей');
+        }
 
         $taskStatus->delete();
         return redirect()->route('task_statuses.index')->with('success', 'Статус успешно удалён');

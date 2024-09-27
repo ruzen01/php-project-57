@@ -52,6 +52,16 @@ class TaskController extends Controller
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя задачи должно содержать хотя бы один символ.',
+            'name.max' => 'Имя задачи не должно превышать 255 символов.',
+            'name.unique' => 'Задача с таким именем уже существует.',
+            'description.max' => 'Описание не должно превышать 1000 символов.',
+            'status_id.required' => 'Выберите статус задачи.',
+            'status_id.exists' => 'Выбранный статус недействителен.',
+            'assigned_to_id.exists' => 'Выбранный исполнитель недействителен.',
+            'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
 
         $validated['created_by_id'] = auth()->id();
@@ -86,6 +96,10 @@ class TaskController extends Controller
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.max' => 'Имя задачи не должно превышать 255 символов.',
+            'description.max' => 'Описание не должно превышать 1000 символов.',
         ]);
 
         $task->update($validatedData);

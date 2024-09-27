@@ -24,7 +24,14 @@ class LabelController extends Controller
         $this->authorize('create', Label::class);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:labels',
+            'name' => 'required|min:1|max:255|unique:labels,name',
+            'description' => 'nullable|string|max:1000',
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя метки должно содержать хотя бы один символ.',
+            'name.max' => 'Имя метки не должно превышать 255 символов.',
+            'name.unique' => 'Метка с таким именем уже существует.',
+            'description.max' => 'Описание не должно превышать 1000 символов.',
         ]);
 
         Label::create($validated);
@@ -43,7 +50,19 @@ class LabelController extends Controller
         $this->authorize('update', $label);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:labels,name,' . $label->id,
+            'name' => [
+                'required',
+                'min:1',
+                'max:255',
+                Rule::unique('labels', 'name')->ignore($label->id),
+            ],
+            'description' => 'nullable|string|max:1000',
+        ], [
+            'name.required' => 'Это обязательное поле',
+            'name.min' => 'Имя метки должно содержать хотя бы один символ.',
+            'name.max' => 'Имя метки не должно превышать 255 символов.',
+            'name.unique' => 'Метка с таким именем уже существует.',
+            'description.max' => 'Описание не должно превышать 1000 символов.',
         ]);
 
         $label->update($validated);
