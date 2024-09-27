@@ -9,7 +9,7 @@ class LabelController extends Controller
 {
     public function index()
     {
-        $labels = Label::all();
+        $labels = Label::paginate(15);
         return view('labels.index', compact('labels'));
     }
 
@@ -55,7 +55,15 @@ class LabelController extends Controller
     {
         $this->authorize('delete', $label);
 
+       // Проверка, есть ли задачи, связанные с меткой
+        if ($label->tasks()->count() > 0) {
+            // Устанавливаем сообщение об ошибке в сессию
+            return redirect()->route('labels.index')
+               ->with('error', 'Не удалось удалить метку');
+        }
+
         $label->delete();
+
         return redirect()->route('labels.index')->with('success', 'Метка успешно удалена');
     }
 }
