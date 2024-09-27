@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\Label;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -33,6 +32,8 @@ class TaskController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Task::class);
+
         $taskStatuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
@@ -41,6 +42,8 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', Task::class);
+
         $validated = $request->validate([
             'name' => 'required|min:1|max:255|unique:tasks,name',
             'description' => 'nullable|string|max:1000',
@@ -48,16 +51,6 @@ class TaskController extends Controller
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
-        ], [
-            'name.required' => 'Это обязательное поле',
-            'name.min' => 'Имя задачи должно содержать хотя бы один символ.',
-            'name.max' => 'Имя задачи не должно превышать 255 символов.',
-            'name.unique' => 'Задача с таким именем уже существует.',
-            'description.max' => 'Описание не должно превышать 1000 символов.',
-            'status_id.required' => 'Выберите статус задачи.',
-            'status_id.exists' => 'Выбранный статус недействителен.',
-            'assigned_to_id.exists' => 'Выбранный исполнитель недействителен.',
-            'labels.*.exists' => 'Выбрана недействительная метка.',
         ]);
 
         $validated['created_by_id'] = auth()->id();
@@ -73,6 +66,8 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
+        $this->authorize('update', $task);
+
         $taskStatuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
@@ -81,6 +76,8 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
+        $this->authorize('update', $task);
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
@@ -88,10 +85,6 @@ class TaskController extends Controller
             'assigned_to_id' => 'nullable|exists:users,id',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
-        ], [
-            'name.required' => 'Это обязательное поле',
-            'name.max' => 'Имя задачи не должно превышать 255 символов.',
-            'description.max' => 'Описание не должно превышать 1000 символов.',
         ]);
 
         $task->update($validatedData);
@@ -105,6 +98,8 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        $this->authorize('delete', $task);
+
         $task->delete();
         return redirect()->route('tasks.index')->with('success', 'Задача успешно удалена');
     }
