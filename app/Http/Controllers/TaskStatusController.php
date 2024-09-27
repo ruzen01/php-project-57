@@ -29,7 +29,7 @@ class TaskStatusController extends Controller
 
         TaskStatus::create($validated);
 
-        return redirect()->route('task_statuses.index')->with('success', 'Статус задачи успешно создан');
+        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно создан');
     }
 
     public function edit(TaskStatus $taskStatus)
@@ -48,7 +48,7 @@ class TaskStatusController extends Controller
 
         $taskStatus->update($validated);
 
-        return redirect()->route('task_statuses.index')->with('success', 'Статус задачи успешно обновлён');
+        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно обновлён');
     }
 
     public function destroy(TaskStatus $taskStatus)
@@ -56,6 +56,6 @@ class TaskStatusController extends Controller
         $this->authorize('delete', $taskStatus);
 
         $taskStatus->delete();
-        return redirect()->route('task_statuses.index')->with('success', 'Статус задачи успешно удалён');
+        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно удалён');
     }
 }
