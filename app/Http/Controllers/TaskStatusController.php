@@ -48,7 +48,7 @@ class TaskStatusController extends Controller
 
         $taskStatus->update($validated);
 
-        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно обновлён');
+        return redirect()->route('task_statuses.index')->with('success', 'Статус успешно изменён');
     }
 
     public function destroy(TaskStatus $taskStatus)
