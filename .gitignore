@@ -23,3 +23,4 @@ localhost.pem
 .php-cs-fixer.cache
 *.log
 *.tmp
+.gitpod.yml
