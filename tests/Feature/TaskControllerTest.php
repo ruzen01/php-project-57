@@ -84,7 +84,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * Тест для обновления существующей задачи.
+     * Тест для обновления существующей задачи
      *
      * @return void
      */
