@@ -46,10 +46,10 @@
                 @endforeach
             </tbody>
         </table>
-            <!-- Пагинация -->
-    <div class="mt-4">
-        {{ $taskStatuses->links() }}
-    </div>
+        <!-- Пагинация -->
+        <div class="mt-4">
+            {{ $taskStatuses->links() }}
+        </div>
     </div>
 </div>
 @endsection
