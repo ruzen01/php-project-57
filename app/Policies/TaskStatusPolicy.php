@@ -9,10 +9,6 @@ class TaskStatusPolicy
 {
     /**
      * Проверяем, может ли пользователь просматривать статус задачи.
-     *
-     * @param  User  $user
-     * @param  TaskStatus  $taskStatus
-     * @return bool
      */
     public function view(User $user, TaskStatus $taskStatus): bool
     {
@@ -21,36 +17,25 @@ class TaskStatusPolicy
 
     /**
      * Проверяем, может ли пользователь создавать статусы задач.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function create(User $user): bool
     {
-        return $user !== null; // Только аутентифицированные пользователи могут создавать статусы
+        return true; // Любой аутентифицированный пользователь может создавать статусы
     }
 
     /**
      * Проверяем, может ли пользователь обновлять статусы задач.
-     *
-     * @param  User  $user
-     * @param  TaskStatus  $taskStatus
-     * @return bool
      */
     public function update(User $user, TaskStatus $taskStatus): bool
     {
-        return $user !== null; // Любой залогиненный пользователь может редактировать статусы задач
+        return true; // Любой аутентифицированный пользователь может редактировать статусы
     }
 
     /**
      * Проверяем, может ли пользователь удалять статус задачи.
-     *
-     * @param  User  $user
-     * @param  TaskStatus  $taskStatus
-     * @return bool
      */
     public function delete(User $user, TaskStatus $taskStatus): bool
     {
-        return $user !== null; // Любой залогиненный пользователь может удалять статусы задач
+        return true; // Любой аутентифицированный пользователь может удалять статусы
     }
 }
