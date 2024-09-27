@@ -16,17 +16,28 @@ class TaskControllerTest extends TestCase
     public function testIndexDisplaysTasks(): void
     {
         $this->withoutExceptionHandling();
-
+    
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
+    
+        /** @var \App\Models\TaskStatus $taskStatus */
         $taskStatus = TaskStatus::factory()->create();
-        $task = Task::factory()->create(['created_by_id' => $user->id, 'status_id' => $taskStatus->id]);
+    
+        /** @var \App\Models\Task $task */
+        $task = Task::factory()->create([
+            'created_by_id' => $user->id,
+            'status_id' => $taskStatus->id,
+        ]);
+    
+        /** @var \App\Models\Label $label */
         $label = Label::factory()->create();
+    
         $task->labels()->attach($label);
-
+    
         $this->actingAs($user);
-
+    
         $response = $this->get(route('tasks.index'));
-
+    
         $response->assertStatus(200);
         $response->assertViewIs('tasks.index');
         $response->assertViewHas('tasks');
